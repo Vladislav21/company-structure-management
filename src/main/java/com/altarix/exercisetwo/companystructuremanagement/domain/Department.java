@@ -1,12 +1,14 @@
 package com.altarix.exercisetwo.companystructuremanagement.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class Department {
     private int id;
     private String name;
     private Date creationDate;
     private Employee chief;
+    private List<Employee> employees;
 
     public int getId() {
         return id;
@@ -38,5 +40,13 @@ public class Department {
 
     public void setChief(Employee chief) {
         this.chief = chief;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 }

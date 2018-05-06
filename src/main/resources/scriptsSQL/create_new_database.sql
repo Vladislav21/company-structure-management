@@ -44,3 +44,16 @@ CREATE INDEX departments_parent_id
   ON departments
 USING BTREE (parent_id);
 
+ALTER TABLE employees
+  ADD COLUMN department_id INTEGER,
+  ADD CONSTRAINT fk_employees_to_departments FOREIGN KEY (department_id)
+REFERENCES departments (id)
+  MATCH SIMPLE
+  ON UPDATE NO ACTION
+  ON DELETE NO ACTION;
+
+DROP INDEX IF EXISTS employees_department_id;
+CREATE INDEX employees_department_id
+  ON employees
+USING BTREE (department_id);
+
