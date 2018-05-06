@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface DepartmentDAO {
 
-    boolean add(Department department);
+    void add(Department department);
 
-    Department update(@Param("name") String name);
+    void update(@Param("name") String name);
 
-    boolean delete(@Param("id") int id);
+    void delete(@Param("id") int id);
 
     Department getDepartmentById(@Param("id") int id);
 
@@ -19,12 +19,12 @@ public interface DepartmentDAO {
 
     List<Department> getAllLowLvlDepartments(@Param("id") int id);
 
-    boolean swapDepartment(@Param("idSwapped") int idSwapped, @Param("idPointer") int idPointer);
+    void swapDepartment(@Param("idSwapped") int idSwapped, @Param("idPointer") int idPointer);
 
     List<Department> getAllHighDepartments(@Param("id") int id);
 
     Department searchDepartmentByName(@Param("name") String name);
 
-    Double getFundOfSalary(@Param("id") int id);
+    double getFundOfSalary(@Param("id") int id);
 
 }

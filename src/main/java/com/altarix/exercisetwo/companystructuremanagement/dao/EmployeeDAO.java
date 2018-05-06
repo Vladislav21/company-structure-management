@@ -9,17 +9,17 @@ public interface EmployeeDAO {
 
     List<Employee> getListEmployeeByDepartmentId(@Param("idDepartment") int idDepartment);
 
-    boolean add(Employee employee);
+    void add(Employee employee);
 
-    Employee update(Employee employee);
+    void update(Employee employee);
 
-    boolean dismissEmployeeById(@Param("id") int id);
+    void dismissEmployeeById(@Param("id") int id);
 
     Employee getEmployeeById(@Param("id") int id);
 
-    boolean swapEmployeeToDepartment(@Param("idEmployee") int idEmployee, @Param("idPointer") int idPointer);
+    void swapEmployeeToDepartment(@Param("idEmployee") int idEmployee, @Param("idPointer") int idPointer);
 
-    boolean swapAllEmployeesToDepartment(@Param("idSwapped") int idSwapped, @Param("idPointer") int idPointer);
+    void swapAllEmployeesToDepartment(@Param("idSwapped") int idSwapped, @Param("idPointer") int idPointer);
 
     Employee getChiefByIdEmployee(@Param("id") int id);
 
