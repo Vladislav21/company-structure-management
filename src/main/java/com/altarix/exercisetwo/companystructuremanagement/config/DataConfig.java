@@ -17,7 +17,7 @@ import java.io.IOException;
 @Configuration
 @PropertySource("classpath:application.properties")
 @EnableConfigurationProperties
-@MapperScan("com.altarix.exercisetwo.companystructuremanagement.dao")
+@MapperScan("com/altarix/exercisetwo/companystructuremanagement/dao")
 public class DataConfig {
     @Value("${spring.datasource.driverClassName}")
     private String driver;
@@ -51,7 +51,7 @@ public class DataConfig {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setTypeAliasesPackage("com.altarix.exercisetwo.companystructuremanagement.domain");
-        sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapping.dao/*xml"));
+        sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:com/altarix/exercisetwo/companystructuremanagement/dao/*xml"));
         return sessionFactory;
     }
 }

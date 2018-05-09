@@ -1,12 +1,18 @@
 package com.altarix.exercisetwo.companystructuremanagement;
 
+import com.altarix.exercisetwo.companystructuremanagement.config.DataConfig;
+import com.altarix.exercisetwo.companystructuremanagement.config.JacksonConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class CompanyStructureManagementApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CompanyStructureManagementApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(new Class[]{
+                CompanyStructureManagementApplication.class,
+                DataConfig.class,
+                JacksonConfig.class
+        }, args);
+    }
 }

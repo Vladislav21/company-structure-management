@@ -7,6 +7,8 @@ public class Department {
     private int id;
     private String name;
     private Date creationDate;
+    private int chiefId;
+    private int parentId;
     private Employee chief;
     private List<Employee> employees;
 
@@ -32,6 +34,22 @@ public class Department {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public int getChiefId() {
+        return chiefId;
+    }
+
+    public void setChiefId(int chiefId) {
+        this.chiefId = chiefId;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public Employee getChief() {

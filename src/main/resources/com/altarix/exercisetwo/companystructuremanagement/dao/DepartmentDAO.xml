@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.altarix.exercisetwo.companystructuremanagement.dao.DepartmentDAO">
+
+
+    <sql id="baseParam">
+
+    </sql>
+
+    <insert id="add" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO departments (name, creation_date, chief_id, parent_id)
+        VALUES (#{name}, #{creationDate}, #{chiefId}, #{parentId});
+    </insert>
+
+    <update id="appointChiefOfDepartment">
+        UPDATE employees
+        SET is_chief = TRUE
+        WHERE id = #{chiefId}
+    </update>
+
+    <select id="checkIdChief" resultType="Boolean">
+        SELECT exists(SELECT 1
+                      FROM departments
+                      WHERE chief_id = #{chiefId})
+    </select>
+
+    <update id="update">
+        UPDATE departments
+        SET
+            name = #{name}
+        WHERE id = #{id}
+    </update>
+
+    <select id="checkingDepartmentName" resultType="Boolean">
+        SELECT exists(SELECT 1
+                      FROM departments
+                      WHERE name = #{name})
+    </select>
+
+    <select id="getDepartmentById" resultType="departmentMap">
+
+    </select>
+
+
+</mapper>

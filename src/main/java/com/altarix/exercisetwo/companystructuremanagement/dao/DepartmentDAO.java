@@ -9,7 +9,7 @@ public interface DepartmentDAO {
 
     void add(Department department);
 
-    void update(@Param("name") String name);
+    void update(@Param("id") int id, @Param("name") String name);
 
     void delete(@Param("id") int id);
 
@@ -26,5 +26,11 @@ public interface DepartmentDAO {
     Department searchDepartmentByName(@Param("name") String name);
 
     double getFundOfSalary(@Param("id") int id);
+
+    boolean checkIdChief(@Param("chiefId") int chiefId);
+
+    boolean checkingDepartmentName(@Param("name") String name);
+
+    void appointChiefOfDepartment(@Param("chiefId") int chiefId);
 
 }

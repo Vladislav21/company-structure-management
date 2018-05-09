@@ -17,8 +17,8 @@ public class DepartmentService {
         departmentDAO.add(department);
     }
 
-    public Department update(String name) {
-        departmentDAO.update(name);
+    public Department update(int id, String name) {
+        departmentDAO.update(id, name);
         return departmentDAO.searchDepartmentByName(name);
     }
 
@@ -48,6 +48,18 @@ public class DepartmentService {
 
     public double getFundOfSalary(int id) {
         return departmentDAO.getFundOfSalary(id);
+    }
+
+    public boolean checkIdChief(int chiefId) {
+        return departmentDAO.checkIdChief(chiefId);
+    }
+
+    public boolean checkingDepartmentName(String name) {
+        return departmentDAO.checkingDepartmentName(name);
+    }
+
+    public void appointChiefOfDepartment(int chiefId) {
+        departmentDAO.appointChiefOfDepartment(chiefId);
     }
 
 }
