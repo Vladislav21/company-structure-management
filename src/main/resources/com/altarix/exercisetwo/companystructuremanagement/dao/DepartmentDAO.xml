@@ -6,24 +6,48 @@
 
 
     <sql id="baseParam">
+        d.name,
+        d.creation_date,
+        ( select count (e.id) from employees e where e.department_id = #{id}) as number_of_employees,
+        e.last_name || ' ' ||e.first_name|| ' '|| e.patronymic as chief_of_department
+    </sql>
 
+    <sql id="baseJoin">
+        from departments d
+        join employees e ON d.id = e.department_id
     </sql>
 
     <insert id="add" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO departments (name, creation_date, chief_id, parent_id)
-        VALUES (#{name}, #{creationDate}, #{chiefId}, #{parentId});
+        VALUES (#{name}, #{creationDate}, NULL, #{parentId});
     </insert>
 
-    <update id="appointChiefOfDepartment">
+    <update id="appointChiefToDepartment">
+        UPDATE departments
+        SET chief_id = #{chiefId}
+        WHERE id = #{id}
+    </update>
+
+    <update id="appointChiefToEmployees">
         UPDATE employees
         SET is_chief = TRUE
         WHERE id = #{chiefId}
     </update>
 
-    <select id="checkIdChief" resultType="Boolean">
-        SELECT exists(SELECT 1
-                      FROM departments
-                      WHERE chief_id = #{chiefId})
+    <select id="checkIdChief" resultType="Integer">
+        SELECT e.department_id
+        FROM employees e
+        WHERE e.id = #{chiefId}
+    </select>
+
+    <select id="checkEmployeesOfDepartment" resultType="Boolean">
+        WITH empl AS (
+        SELECT e.is_chief FROM employees e
+        WHERE e.department_id = ( SELECT e2.department_id FROM employees e2 WHERE e2.id = #{chiefId})
+        )
+        SELECT exists(SELECT e.is_chief
+                      FROM empl e
+                      WHERE e.is_chief = TRUE)
     </select>
 
     <update id="update">
@@ -39,9 +63,29 @@
                       WHERE name = #{name})
     </select>
 
-    <select id="getDepartmentById" resultType="departmentMap">
-
+    <select id="getDepartmentById" resultMap="departmentMap">
+        SELECT
+        <include refid="baseParam"/>
+        <include refid="baseJoin"/>
+        where e.department_id = #{id} and e.is_chief = TRUE
     </select>
 
+    <delete id="delete">
+        DELETE FROM departments
+        WHERE id = #{id}
+    </delete>
+
+    <select id="checkExistenceEmployeeInDepartment" resultType="Boolean">
+        SELECT exists(SELECT e.id
+                      FROM employees e
+                      WHERE e.department_id = #{id})
+    </select>
+
+    <resultMap id="departmentMap" type="Department">
+        <result property="name" column="name"/>
+        <result property="creationDate" column="creation_date"/>
+        <result property="numberOfEmployees" column="number_of_employees"/>
+        <result property="chief" column="chief_of_department"/>
+    </resultMap>
 
 </mapper>

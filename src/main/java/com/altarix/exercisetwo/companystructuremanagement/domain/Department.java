@@ -1,16 +1,20 @@
 package com.altarix.exercisetwo.companystructuremanagement.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 public class Department {
     private int id;
     private String name;
-    private Date creationDate;
+    private LocalDate creationDate;
     private int chiefId;
     private int parentId;
-    private Employee chief;
-    private List<Employee> employees;
+    private String chief;
+    private int numberOfEmployees;
 
     public int getId() {
         return id;
@@ -28,11 +32,11 @@ public class Department {
         this.name = name;
     }
 
-    public Date getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -52,19 +56,20 @@ public class Department {
         this.parentId = parentId;
     }
 
-    public Employee getChief() {
+    public String getChief() {
         return chief;
     }
 
-    public void setChief(Employee chief) {
+    public void setChief(String chief) {
         this.chief = chief;
     }
 
-    public List<Employee> getEmployees() {
-        return employees;
+    public int getNumberOfEmployees() {
+        return numberOfEmployees;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
+    public void setNumberOfEmployees(int numberOfEmployees) {
+        this.numberOfEmployees = numberOfEmployees;
     }
+
 }

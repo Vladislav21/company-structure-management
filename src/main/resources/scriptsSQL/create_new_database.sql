@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS departments (
   CONSTRAINT fk_departments_to_employees FOREIGN KEY (chief_id)
   REFERENCES employees (id)
     MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION,
+    ON UPDATE SET NULL
+    ON DELETE SET NULL ,
   CONSTRAINT fk_departments_to_departments FOREIGN KEY (parent_id)
   REFERENCES departments (id)
     MATCH SIMPLE
@@ -49,8 +49,8 @@ ALTER TABLE employees
   ADD CONSTRAINT fk_employees_to_departments FOREIGN KEY (department_id)
 REFERENCES departments (id)
   MATCH SIMPLE
-  ON UPDATE NO ACTION
-  ON DELETE NO ACTION;
+  ON UPDATE SET NULL
+  ON DELETE SET NULL ;
 
 DROP INDEX IF EXISTS employees_department_id;
 CREATE INDEX employees_department_id

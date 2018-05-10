@@ -27,10 +27,16 @@ public interface DepartmentDAO {
 
     double getFundOfSalary(@Param("id") int id);
 
-    boolean checkIdChief(@Param("chiefId") int chiefId);
+    int checkIdChief(@Param("chiefId") int chiefId);
+
+    boolean checkEmployeesOfDepartment(@Param("chiefId") int chiefId);
+
+    boolean checkExistenceEmployeeInDepartment(@Param("id") int id);
 
     boolean checkingDepartmentName(@Param("name") String name);
 
-    void appointChiefOfDepartment(@Param("chiefId") int chiefId);
+    void appointChiefToEmployees(@Param("chiefId") int chiefId);
+
+    void appointChiefToDepartment(@Param("chiefId") int chiefId, @Param("id") int id);
 
 }

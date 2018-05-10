@@ -19,6 +19,7 @@ public class JacksonConfig {
         objectMapper.setTimeZone(TimeZone.getDefault());//to sync dates without timezone
         objectMapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.findAndRegisterModules();
         return objectMapper;
     }
 }

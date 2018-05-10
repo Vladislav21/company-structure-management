@@ -1,5 +1,8 @@
 package com.altarix.exercisetwo.companystructuremanagement.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Employee {
@@ -8,11 +11,11 @@ public class Employee {
     private String firstName;
     private String patronymic;
     private String gender;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String phoneNumber;
     private String mail;
-    private Date employmentDate;
-    private Date dateOfDismissal;
+    private LocalDate employmentDate;
+    private LocalDate dateOfDismissal;
     private String position;
     private Double salary;
     private boolean isChief;
@@ -57,14 +60,6 @@ public class Employee {
         this.gender = gender;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -79,22 +74,6 @@ public class Employee {
 
     public void setMail(String mail) {
         this.mail = mail;
-    }
-
-    public Date getEmploymentDate() {
-        return employmentDate;
-    }
-
-    public void setEmploymentDate(Date employmentDate) {
-        this.employmentDate = employmentDate;
-    }
-
-    public Date getDateOfDismissal() {
-        return dateOfDismissal;
-    }
-
-    public void setDateOfDismissal(Date dateOfDismissal) {
-        this.dateOfDismissal = dateOfDismissal;
     }
 
     public String getPosition() {
@@ -119,5 +98,29 @@ public class Employee {
 
     public void setChief(boolean chief) {
         isChief = chief;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public LocalDate getEmploymentDate() {
+        return employmentDate;
+    }
+
+    public void setEmploymentDate(LocalDate employmentDate) {
+        this.employmentDate = employmentDate;
+    }
+
+    public LocalDate getDateOfDismissal() {
+        return dateOfDismissal;
+    }
+
+    public void setDateOfDismissal(LocalDate dateOfDismissal) {
+        this.dateOfDismissal = dateOfDismissal;
     }
 }
