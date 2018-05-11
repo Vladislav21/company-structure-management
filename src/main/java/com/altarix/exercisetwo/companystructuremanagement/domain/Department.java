@@ -3,11 +3,9 @@ package com.altarix.exercisetwo.companystructuremanagement.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 public class Department {
+    @JsonIgnore
     private int id;
     private String name;
     private LocalDate creationDate;

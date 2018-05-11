@@ -27,7 +27,11 @@ public class DepartmentService {
     }
 
     public Department getDepartmentById(int id) {
-        return departmentDAO.getDepartmentById(id);
+        if (departmentDAO.isThereChiefDepartment(id)) {
+            return departmentDAO.getDepartmentById(id);
+        } else {
+            return departmentDAO.getDepartmentByIdWithoutChief(id);
+        }
     }
 
     public List<Department> getLowLvlDepartments(int id) {
@@ -73,5 +77,10 @@ public class DepartmentService {
     public boolean checkExistenceEmployeeInDepartment(int id) {
         return departmentDAO.checkExistenceEmployeeInDepartment(id);
     }
+
+    public boolean isThereDepartment(int id) {
+        return departmentDAO.isThereDepartment(id);
+    }
+
 
 }

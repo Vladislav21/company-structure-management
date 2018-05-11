@@ -34,6 +34,13 @@
         WHERE id = #{chiefId}
     </update>
 
+    <update id="update">
+        UPDATE departments
+        SET
+            name = #{name}
+        WHERE id = #{id}
+    </update>
+
     <select id="checkIdChief" resultType="Integer">
         SELECT e.department_id
         FROM employees e
@@ -45,22 +52,32 @@
         SELECT e.is_chief FROM employees e
         WHERE e.department_id = ( SELECT e2.department_id FROM employees e2 WHERE e2.id = #{chiefId})
         )
-        SELECT exists(SELECT e.is_chief
+        SELECT exists(SELECT 1
                       FROM empl e
                       WHERE e.is_chief = TRUE)
     </select>
-
-    <update id="update">
-        UPDATE departments
-        SET
-            name = #{name}
-        WHERE id = #{id}
-    </update>
 
     <select id="checkingDepartmentName" resultType="Boolean">
         SELECT exists(SELECT 1
                       FROM departments
                       WHERE name = #{name})
+    </select>
+
+    <select id="getDepartmentByIdWithoutChief" resultMap="departmentWithoutChiefMap">
+        SELECT
+            d.name,
+            d.creation_date,
+            (SELECT count(e.id)
+             FROM employees e
+             WHERE e.department_id = #{id}) AS number_of_employees
+        FROM departments d
+        WHERE d.id = #{id}
+    </select>
+
+    <select id="isThereChiefDepartment" resultType="Boolean">
+        SELECT exists(SELECT 1
+                      FROM departments d
+                      WHERE d.id = #{id} AND d.chief_id NOTNULL)
     </select>
 
     <select id="getDepartmentById" resultMap="departmentMap">
@@ -70,22 +87,34 @@
         where e.department_id = #{id} and e.is_chief = TRUE
     </select>
 
-    <delete id="delete">
-        DELETE FROM departments
-        WHERE id = #{id}
-    </delete>
-
     <select id="checkExistenceEmployeeInDepartment" resultType="Boolean">
         SELECT exists(SELECT e.id
                       FROM employees e
                       WHERE e.department_id = #{id})
     </select>
 
+    <select id="isThereDepartment" resultType="Boolean">
+        SELECT exists(SELECT d.id
+                      FROM departments d
+                      WHERE d.id = #{id})
+    </select>
+
+    <delete id="delete">
+        DELETE FROM departments
+        WHERE id = #{id}
+    </delete>
+
     <resultMap id="departmentMap" type="Department">
         <result property="name" column="name"/>
         <result property="creationDate" column="creation_date"/>
         <result property="numberOfEmployees" column="number_of_employees"/>
         <result property="chief" column="chief_of_department"/>
+    </resultMap>
+
+    <resultMap id="departmentWithoutChiefMap" type="Department">
+        <result property="name" column="name"/>
+        <result property="creationDate" column="creation_date"/>
+        <result property="numberOfEmployees" column="number_of_employees"/>
     </resultMap>
 
 </mapper>

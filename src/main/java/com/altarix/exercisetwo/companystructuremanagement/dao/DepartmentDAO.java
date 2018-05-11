@@ -15,6 +15,8 @@ public interface DepartmentDAO {
 
     Department getDepartmentById(@Param("id") int id);
 
+    Department getDepartmentByIdWithoutChief(@Param("id") int id);
+
     List<Department> getLowLvlDepartments(@Param("id") int id);
 
     List<Department> getAllLowLvlDepartments(@Param("id") int id);
@@ -34,6 +36,10 @@ public interface DepartmentDAO {
     boolean checkExistenceEmployeeInDepartment(@Param("id") int id);
 
     boolean checkingDepartmentName(@Param("name") String name);
+
+    boolean isThereChiefDepartment(@Param("id")int id);
+
+    boolean isThereDepartment(@Param("id")int id);
 
     void appointChiefToEmployees(@Param("chiefId") int chiefId);
 

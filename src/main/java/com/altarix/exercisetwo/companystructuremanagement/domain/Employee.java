@@ -1,11 +1,13 @@
 package com.altarix.exercisetwo.companystructuremanagement.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 
 public class Employee {
+    @JsonIgnore
     private int id;
     private String lastName;
     private String firstName;

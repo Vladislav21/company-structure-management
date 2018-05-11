@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS departments (
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
 );
-
+--------------------------------------------------------------------
 DROP INDEX IF EXISTS departments_chief_id;
 CREATE INDEX departments_chief_id
   ON departments
@@ -43,7 +43,7 @@ DROP INDEX IF EXISTS departments_parent_id;
 CREATE INDEX departments_parent_id
   ON departments
 USING BTREE (parent_id);
-
+--------------------------------------------------------------------
 ALTER TABLE employees
   ADD COLUMN department_id INTEGER,
   ADD CONSTRAINT fk_employees_to_departments FOREIGN KEY (department_id)
@@ -51,9 +51,38 @@ REFERENCES departments (id)
   MATCH SIMPLE
   ON UPDATE SET NULL
   ON DELETE SET NULL ;
-
+--------------------------------------------------------------------
 DROP INDEX IF EXISTS employees_department_id;
 CREATE INDEX employees_department_id
   ON employees
 USING BTREE (department_id);
+--------------------------------------------------------------------
+CREATE FUNCTION departments_stamp()
+  RETURNS TRIGGER AS
+  $BODY$
+BEGIN
+IF NEW.name IS NULL
+THEN
+RAISE EXCEPTION 'name of department cannot be null';
+END IF;
+IF NEW.creation_date IS NULL
+THEN
+RAISE EXCEPTION 'creation date cannot be null';
+END IF;
+IF NEW.parent_id <= 0
+THEN
+RAISE EXCEPTION 'parent id can be more than 0';
+END IF;
+IF NEW.parent_id > (SELECT max(d.id)
+FROM departments d)
+THEN
+RAISE EXCEPTION 'current parent id cannot be more than  max parent id';
+END IF;
+RETURN NEW;
+END;
+$BODY$ LANGUAGE plpgsql;
 
+CREATE TRIGGER departments_stamp
+BEFORE INSERT OR UPDATE ON departments
+FOR EACH ROW EXECUTE PROCEDURE departments_stamp();
+--------------------------------------------------------------------
