@@ -48,4 +48,13 @@ public class GlobalExceptionHandler {
         modelAndView.addObject("error", ex);
         return modelAndView;
     }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Invalid parameters of employee")
+    @ExceptionHandler(InvalidParamOfEmployeeException.class)
+    public ModelAndView handlerInvalidParamOfEmployeeException(InvalidValueOfDataException ex) {
+        logger.error("Invalid parameters of employee");
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("error", ex);
+        return modelAndView;
+    }
 }

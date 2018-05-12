@@ -6,7 +6,6 @@ import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValu
 import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfDepartmentIdException;
 import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfDepartmentNameException;
 import com.altarix.exercisetwo.companystructuremanagement.service.DepartmentService;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

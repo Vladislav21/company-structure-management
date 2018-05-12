@@ -17,6 +17,8 @@ public interface EmployeeDAO {
 
     Employee getEmployeeById(@Param("id") int id);
 
+    Double getSalaryChiefForCurrentDepartment(@Param("idDepartment")int idDepartment);
+
     void swapEmployeeToDepartment(@Param("idEmployee") int idEmployee, @Param("idPointer") int idPointer);
 
     void swapAllEmployeesToDepartment(@Param("idSwapped") int idSwapped, @Param("idPointer") int idPointer);

@@ -44,7 +44,7 @@
     <update id="swapDepartment">
         UPDATE departments
         SET parent_id = #{idPointer}
-        WHERE id = #{idSwapped}
+        WHERE id = #{idSwapped} AND parent_id IS NOT NULL
     </update>
 
     <select id="checkIdChief" resultType="Integer">

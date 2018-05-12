@@ -15,11 +15,13 @@ public class DepartmentService {
     private DepartmentDAO departmentDAO;
 
     public void add(Department department) {
+        String s = firstUpperCase(department.getName());
+        department.setName(s);
         departmentDAO.add(department);
     }
 
     public Department update(int id, String name) {
-        departmentDAO.update(id, name);
+        departmentDAO.update(id, firstUpperCase(name));
         return departmentDAO.getDepartmentById(id);
     }
 
@@ -36,8 +38,9 @@ public class DepartmentService {
     }
 
     public List<Department> searchDepartmentByName(String name) {
+        String result = firstUpperCase(name);
         String s = "%" +
-                name +
+                result +
                 "%";
         return departmentDAO.searchDepartmentByName(s);
     }
@@ -67,7 +70,7 @@ public class DepartmentService {
     }
 
     public boolean checkingDepartmentName(String name) {
-        return departmentDAO.checkingDepartmentName(name);
+        return departmentDAO.checkingDepartmentName(firstUpperCase(name));
     }
 
     public void appointChiefToDepartment(int chiefId, int id) {
@@ -90,5 +93,8 @@ public class DepartmentService {
         return departmentDAO.isThereDepartment(id);
     }
 
+    private String firstUpperCase(String word) {
+        return word.substring(0, 1).toUpperCase() + word.substring(1);
+    }
 
 }

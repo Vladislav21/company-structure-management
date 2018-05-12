@@ -4,4 +4,39 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.altarix.exercisetwo.companystructuremanagement.dao.EmployeeDAO">
 
+
+    <insert id="add" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO employees (last_name, first_name, patronymic, gender, date_of_birth,
+                               phone_number, mail, employment_date, date_of_dismissal,
+                               position, salary, is_chief, department_id)
+        VALUES (#{lastName}, #{firstName}, #{patronymic}, #{gender}, #{dateOfBirth}, #{phoneNumber},
+                             #{mail}, #{employmentDate}, NULL, #{position}, #{salary}, #{isChief}, #{departmentId})
+    </insert>
+
+    <select id="getListEmployeeByDepartmentId" resultMap="employeeMap">
+        SELECT *
+        FROM employees e
+        WHERE e.department_id = #{idDepartment}
+    </select>
+
+    <select id="getSalaryChiefForCurrentDepartment" resultType="Double">
+        SELECT e.salary
+        FROM employees e
+        WHERE e.department_id = #{idDepartment} AND e.is_chief = TRUE;
+    </select>
+
+    <resultMap id="employeeMap" type="Employee">
+        <result property="lastName" column="last_name"/>
+        <result property="firstName" column="first_name"/>
+        <result property="patronymic" column="patronymic"/>
+        <result property="gender" column="gender"/>
+        <result property="dateOfBirth" column="date_of_birth"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="mail" column="mail"/>
+        <result property="employmentDate" column="employment_date"/>
+        <result property="dateOfDismissal" column="date_of_dismissal"/>
+        <result property="position" column="position"/>
+        <result property="salary" column="salary"/>
+        <result property="isChief" column="is_chief"/>
+    </resultMap>
 </mapper>

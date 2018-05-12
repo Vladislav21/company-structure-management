@@ -21,6 +21,7 @@ public class Employee {
     private String position;
     private Double salary;
     private boolean isChief;
+    private int departmentId;
 
     public int getId() {
         return id;
@@ -124,5 +125,13 @@ public class Employee {
 
     public void setDateOfDismissal(LocalDate dateOfDismissal) {
         this.dateOfDismissal = dateOfDismissal;
+    }
+
+    public int getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
     }
 }
