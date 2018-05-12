@@ -25,7 +25,7 @@ public interface DepartmentDAO {
 
     List<Department> getAllHighDepartments(@Param("id") int id);
 
-    Department searchDepartmentByName(@Param("name") String name);
+    List<Department> searchDepartmentByName(@Param("name") String name);
 
     double getFundOfSalary(@Param("id") int id);
 

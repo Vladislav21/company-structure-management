@@ -1,5 +1,6 @@
-package com.altarix.exercisetwo.companystructuremanagement.exceptions;
+package com.altarix.exercisetwo.companystructuremanagement.controllers;
 
+import com.altarix.exercisetwo.companystructuremanagement.exceptions.*;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,6 +35,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidValueOfDepartmentIdException.class)
     public ModelAndView handlerInvalidValueOfDepartmentIdException(InvalidValueOfDataException ex) {
         logger.error("In this department exists employees or current id is absent");
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("error", ex);
+        return modelAndView;
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Departments are absent")
+    @ExceptionHandler(DepartmentsNotFoundException.class)
+    public ModelAndView handlerDepartmentsNotFoundException(NotFoundParamOfCompanyException ex) {
+        logger.error("Departments are absent");
         ModelAndView modelAndView = new ModelAndView("error");
         modelAndView.addObject("error", ex);
         return modelAndView;

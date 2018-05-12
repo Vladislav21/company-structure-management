@@ -1,13 +1,17 @@
 package com.altarix.exercisetwo.companystructuremanagement.controllers;
 
 import com.altarix.exercisetwo.companystructuremanagement.domain.Department;
+import com.altarix.exercisetwo.companystructuremanagement.exceptions.DepartmentsNotFoundException;
 import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfChiefException;
 import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfDepartmentIdException;
 import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfDepartmentNameException;
 import com.altarix.exercisetwo.companystructuremanagement.service.DepartmentService;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/rest/departments")
@@ -78,6 +82,65 @@ public class DepartmentController {
         Department result = departmentService.getDepartmentById(id);
         if (result != null) {
             return result;
+        } else {
+            throw new InvalidValueOfDepartmentIdException();
+        }
+    }
+
+    @RequestMapping(value = "/getLowLvlDepartments/{id}", method = RequestMethod.GET)
+    public List<Department> getLowLvlDepartments(@PathVariable("id") int id) throws DepartmentsNotFoundException {
+        List<Department> result = departmentService.getLowLvlDepartments(id);
+        if (!result.isEmpty()) {
+            return result;
+        } else {
+            throw new DepartmentsNotFoundException();
+        }
+    }
+
+    @RequestMapping(value = "/getAllLowLvlDepartments/{id}", method = RequestMethod.GET)
+    public List<Department> getAllLowLvlDepartments(@PathVariable("id") int id) throws DepartmentsNotFoundException {
+        List<Department> result = departmentService.getAllLowLvlDepartments(id);
+        if (!result.isEmpty()) {
+            return result;
+        } else {
+            throw new DepartmentsNotFoundException();
+        }
+    }
+
+    @RequestMapping(value = "/swapDepartment/{idSwapped}/{idPointer}", method = RequestMethod.PUT)
+    public void swapDepartment(@PathVariable("idSwapped") int idSwapped, @PathVariable("idPointer") int idPointer) throws InvalidValueOfDepartmentIdException {
+        if (departmentService.isThereDepartment(idSwapped)) {
+            departmentService.swapDepartment(idSwapped, idPointer);
+            logger.info("Update successful");
+        } else {
+            throw new InvalidValueOfDepartmentIdException();
+        }
+    }
+
+    @RequestMapping(value = "/getAllHighDepartments/{id}", method = RequestMethod.GET)
+    public List<Department> getAllHighDepartments(@PathVariable("id") int id) throws DepartmentsNotFoundException {
+        List<Department> result = departmentService.getAllHighDepartments(id);
+        if (!result.isEmpty()) {
+            return result;
+        } else {
+            throw new DepartmentsNotFoundException();
+        }
+    }
+
+    @RequestMapping(value = "/searchDepartmentByName/{name}", method = RequestMethod.GET)
+    public List<Department> searchDepartmentByName(@PathVariable("name") String name) throws DepartmentsNotFoundException {
+        List<Department> result = departmentService.searchDepartmentByName(name);
+        if (!result.isEmpty()) {
+            return result;
+        } else {
+            throw new DepartmentsNotFoundException();
+        }
+    }
+
+    @RequestMapping(value = "/getFundOfSalary/{id}", method = RequestMethod.GET)
+    public double getFundOfSalary(@PathVariable("id") int id) throws InvalidValueOfDepartmentIdException {
+        if (departmentService.isThereDepartment(id) && departmentService.checkExistenceEmployeeInDepartment(id)) {
+            return departmentService.getFundOfSalary(id);
         } else {
             throw new InvalidValueOfDepartmentIdException();
         }

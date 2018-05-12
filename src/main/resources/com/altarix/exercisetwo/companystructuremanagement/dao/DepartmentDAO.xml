@@ -41,6 +41,12 @@
         WHERE id = #{id}
     </update>
 
+    <update id="swapDepartment">
+        UPDATE departments
+        SET parent_id = #{idPointer}
+        WHERE id = #{idSwapped}
+    </update>
+
     <select id="checkIdChief" resultType="Integer">
         SELECT e.department_id
         FROM employees e
@@ -99,6 +105,82 @@
                       WHERE d.id = #{id})
     </select>
 
+    <select id="getLowLvlDepartments" resultMap="departmentSimpleMap">
+        SELECT
+            d.name,
+            d.creation_date
+        FROM departments d
+        WHERE d.parent_id = #{id}
+    </select>
+
+    <select id="getAllLowLvlDepartments" resultMap="departmentSimpleMap">
+        WITH RECURSIVE dep AS (
+        SELECT
+        d.id,
+        d.name,
+        d.creation_date,
+        d.parent_id
+        FROM departments d
+        WHERE d.parent_id = #{id}
+
+        UNION
+
+        SELECT
+        de.id,
+        de.name,
+        de.creation_date,
+        de.parent_id
+        FROM departments de
+        JOIN dep ON de.parent_id = dep.id
+        )
+        SELECT
+            dep.name,
+            dep.creation_date
+        FROM dep;
+    </select>
+
+    <select id="getAllHighDepartments" resultMap="departmentSimpleMap">
+        WITH RECURSIVE dep AS (
+        SELECT
+        d.id,
+        d.name,
+        d.creation_date,
+        d.parent_id
+        FROM departments d
+        WHERE d.id = #{id}
+
+        UNION
+
+        SELECT
+        de.id,
+        de.name,
+        de.creation_date,
+        de.parent_id
+        FROM departments de
+        JOIN dep ON de.id = dep.parent_id
+        )
+        SELECT
+            dep.name,
+            dep.creation_date
+        FROM dep
+        ORDER BY id;
+    </select>
+
+    <select id="searchDepartmentByName" resultMap="departmentSimpleMap">
+        SELECT
+            d.name,
+            d.creation_date
+        FROM departments d
+        WHERE d.name LIKE #{name}
+    </select>
+
+    <select id="getFundOfSalary" resultType="Double">
+        SELECT sum(e.salary) AS fund_of_salary
+        FROM employees e
+        GROUP BY e.department_id
+        HAVING e.department_id = #{id}
+    </select>
+
     <delete id="delete">
         DELETE FROM departments
         WHERE id = #{id}
@@ -115,6 +197,11 @@
         <result property="name" column="name"/>
         <result property="creationDate" column="creation_date"/>
         <result property="numberOfEmployees" column="number_of_employees"/>
+    </resultMap>
+
+    <resultMap id="departmentSimpleMap" type="Department">
+        <result property="name" column="name"/>
+        <result property="creationDate" column="creation_date"/>
     </resultMap>
 
 </mapper>

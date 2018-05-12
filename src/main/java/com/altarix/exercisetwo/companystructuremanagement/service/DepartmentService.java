@@ -2,6 +2,7 @@ package com.altarix.exercisetwo.companystructuremanagement.service;
 
 import com.altarix.exercisetwo.companystructuremanagement.dao.DepartmentDAO;
 import com.altarix.exercisetwo.companystructuremanagement.domain.Department;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,13 @@ public class DepartmentService {
         } else {
             return departmentDAO.getDepartmentByIdWithoutChief(id);
         }
+    }
+
+    public List<Department> searchDepartmentByName(String name) {
+        String s = "%" +
+                name +
+                "%";
+        return departmentDAO.searchDepartmentByName(s);
     }
 
     public List<Department> getLowLvlDepartments(int id) {
