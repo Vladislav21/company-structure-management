@@ -2,6 +2,7 @@ package com.altarix.exercisetwo.companystructuremanagement.service;
 
 import com.altarix.exercisetwo.companystructuremanagement.dao.EmployeeDAO;
 import com.altarix.exercisetwo.companystructuremanagement.domain.Employee;
+import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidParamOfEmployeeException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,19 +34,24 @@ public class EmployeeService {
     public Employee update(Employee employee) {
         employeeDAO.update(employee);
         logger.info("Update successful");
-        return employeeDAO.getEmployeeById(employee.getId());
+        return getEmployeeById(employee.getId());
     }
 
-    public void dismissEmployeeById(int id) {
-        employeeDAO.dismissEmployeeById(id);
+    public void dismissEmployeeById(int id, Date dateOfDismissal) {
+        employeeDAO.dismissEmployeeById(id, dateOfDismissal);
+        logger.info("The dismissal was successful");
     }
 
     public Employee getEmployeeById(int id) {
         return employeeDAO.getEmployeeById(id);
     }
 
-    public void swapEmployeeToDepartment(int idEmployee, int idPointer) {
-        employeeDAO.swapEmployeeToDepartment(idEmployee, idPointer);
+    public void swapEmployeeToDepartment(int idEmployee, int idPointer) throws InvalidParamOfEmployeeException {
+        if (checkSalary(employeeDAO.getSalaryForEmployee(idEmployee), idPointer)) {
+            employeeDAO.swapEmployeeToDepartment(idEmployee, idPointer);
+        } else {
+            throw new InvalidParamOfEmployeeException();
+        }
     }
 
     public void swapAllEmployeesToDepartment(int idSwapped, int idPointer) {
@@ -57,6 +64,10 @@ public class EmployeeService {
 
     public Employee searchEmployeeByPhoneNumber(String phoneNumber) {
         return employeeDAO.searchEmployeeByPhoneNumber(phoneNumber);
+    }
+
+    public boolean isThereEmployee(int id) {
+        return employeeDAO.isThereEmployee(id);
     }
 
     private Double getSalaryChiefForCurrentDepartment(int idDepartment) {
@@ -101,23 +112,18 @@ public class EmployeeService {
 
     private boolean checkSalary(double salary, int idDepartment) {
         Double salaryChiefForCurrentDepartment = getSalaryChiefForCurrentDepartment(idDepartment);
-        return salaryChiefForCurrentDepartment == null || salaryChiefForCurrentDepartment > salary;
+        return salaryChiefForCurrentDepartment == null || salaryChiefForCurrentDepartment >= salary;
+    }
+
+    @SuppressWarnings("deprecation")
+    public boolean checkDateOfDismissal(int id, Date dateOfDismissal) {
+        Date employmentDate = employeeDAO.getEmploymentDate(id);
+        return dateOfDismissal.getYear() > employmentDate.getYear() ||
+                dateOfDismissal.getYear() == employmentDate.getYear()
+                        && dateOfDismissal.getMonth() > employmentDate.getMonth() ||
+                dateOfDismissal.getYear() == employmentDate.getYear()
+                        && dateOfDismissal.getMonth() == employmentDate.getMonth()
+                        && dateOfDismissal.getDay() >= employmentDate.getDay();
     }
 }
 
-
-/*
- } else {
-         if (employmentDate.getYear() > dateOfBirth.getYear() && dateOfDismissal.getYear() > employmentDate.getYear()) {
-         return true;
-         }
-         if (employmentDate.getYear() > dateOfBirth.getYear() && dateOfDismissal.getYear() == employmentDate.getYear()
-         && dateOfDismissal.getMonth().getValue() > employmentDate.getMonth().getValue()) {
-         return true;
-         }
-         if (employmentDate.getYear() > dateOfBirth.getYear() && dateOfDismissal.getYear() == employmentDate.getYear()
-         && dateOfDismissal.getMonth().getValue() == employmentDate.getMonth().getValue()
-         && dateOfDismissal.getDayOfMonth() >= employmentDate.getDayOfMonth()) {
-         return true;
-         }
-         }*/

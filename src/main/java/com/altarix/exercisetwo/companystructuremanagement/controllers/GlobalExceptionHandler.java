@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -53,6 +55,24 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidParamOfEmployeeException.class)
     public ModelAndView handlerInvalidParamOfEmployeeException(InvalidValueOfDataException ex) {
         logger.error("Invalid parameters of employee");
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("error", ex);
+        return modelAndView;
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Employee with this id is absent")
+    @ExceptionHandler(InvalidValueOfEmployeeIdException.class)
+    public ModelAndView handlerInvalidValueOfEmployeeIdException(InvalidValueOfDataException ex) {
+        logger.error("Employee with this id is absent");
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("error", ex);
+        return modelAndView;
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Invalid format of Date")
+    @ExceptionHandler(ParseException.class)
+    public ModelAndView handlerParseException(ParseException ex) {
+        logger.error("Invalid format of Date");
         ModelAndView modelAndView = new ModelAndView("error");
         modelAndView.addObject("error", ex);
         return modelAndView;

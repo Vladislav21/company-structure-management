@@ -10,7 +10,7 @@
                                phone_number, mail, employment_date, date_of_dismissal,
                                position, salary, is_chief, department_id)
         VALUES (#{lastName}, #{firstName}, #{patronymic}, #{gender}, #{dateOfBirth}, #{phoneNumber},
-                             #{mail}, #{employmentDate}, NULL, #{position}, #{salary}, FALSE , #{departmentId})
+                             #{mail}, #{employmentDate}, NULL, #{position}, #{salary}, FALSE, #{departmentId})
     </insert>
 
     <select id="getListEmployeeByDepartmentId" resultMap="employeeMap">
@@ -24,6 +24,63 @@
         FROM employees e
         WHERE e.department_id = #{idDepartment} AND e.is_chief = TRUE;
     </select>
+
+    <select id="isThereEmployee" resultType="Boolean">
+        SELECT exists(SELECT e.id
+                      FROM employees e
+                      WHERE e.id = #{id})
+    </select>
+
+    <select id="getEmployeeById" resultMap="employeeMap">
+        SELECT *
+        FROM employees e
+        WHERE e.id = #{id}
+    </select>
+
+    <select id="getEmploymentDate" resultType="Date">
+        SELECT e.employment_date
+        FROM employees e
+        WHERE e.id = #{id}
+    </select>
+
+    <select id="getSalaryForEmployee" resultType="Double">
+        SELECT e.salary
+        FROM employees e
+        WHERE id = #{idEmployee}
+    </select>
+
+    <update id="dismissEmployeeById">
+        UPDATE employees
+        SET
+            date_of_dismissal = #{dateOfDismissal},
+            is_chief          = FALSE
+        WHERE id = #{id}
+    </update>
+
+    <update id="update">
+        UPDATE employees
+        SET
+            last_name       = #{lastName},
+            first_name      = #{firstName},
+            patronymic      = #{patronymic},
+            gender          = #{gender},
+            date_of_birth   = #{dateOfBirth},
+            phone_number    = #{phoneNumber},
+            mail            = #{mail},
+            employment_date = #{employmentDate},
+            position        = #{position},
+            salary          = #{salary},
+            department_id   = #{departmentId}
+        WHERE id = #{id}
+    </update>
+
+    <update id="swapEmployeeToDepartment">
+        UPDATE employees
+        SET
+            department_id = #{idPointer},
+            is_chief      = FALSE
+        WHERE id = #{idEmployee}
+    </update>
 
     <resultMap id="employeeMap" type="Employee">
         <result property="lastName" column="last_name"/>

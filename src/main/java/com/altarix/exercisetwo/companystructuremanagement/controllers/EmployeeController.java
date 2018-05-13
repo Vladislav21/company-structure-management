@@ -3,11 +3,15 @@ package com.altarix.exercisetwo.companystructuremanagement.controllers;
 import com.altarix.exercisetwo.companystructuremanagement.domain.Employee;
 import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidParamOfEmployeeException;
 import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfDepartmentIdException;
+import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfEmployeeIdException;
 import com.altarix.exercisetwo.companystructuremanagement.service.EmployeeService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -40,13 +44,53 @@ public class EmployeeController {
         }
     }
 
-    @RequestMapping(value = "/putEmployee", method = RequestMethod.PUT)
-    public Employee update(@RequestBody Employee employee) throws InvalidParamOfEmployeeException {
-        if (employeeService.checkValidDataOfEmployee(employee)) {
-            return employeeService.update(employee);
+    @RequestMapping(value = "/putEmployee/{id}", method = RequestMethod.PUT)
+    public Employee update(@RequestBody Employee employee, @PathVariable("id") int id) throws InvalidParamOfEmployeeException, InvalidValueOfEmployeeIdException {
+        if (employeeService.isThereEmployee(id)) {
+            employee.setId(id);
+            if (employeeService.checkValidDataOfEmployee(employee)) {
+                return employeeService.update(employee);
+            } else {
+                throw new InvalidParamOfEmployeeException();
+            }
         } else {
-            throw new InvalidParamOfEmployeeException();
+            throw new InvalidValueOfEmployeeIdException();
         }
     }
 
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    public Employee getEmployeeById(@PathVariable("id") int id) throws InvalidValueOfEmployeeIdException {
+        Employee result = employeeService.getEmployeeById(id);
+        if (result != null) {
+            return result;
+        } else {
+            throw new InvalidValueOfEmployeeIdException();
+        }
+    }
+
+    @RequestMapping(value = "/dismissEmployee/{id}/{dateOfDismissal}", method = RequestMethod.PUT)
+    public void dismissEmployeeById(@PathVariable("id") int id, @PathVariable("dateOfDismissal") String dateOfDismissal) throws InvalidValueOfEmployeeIdException, InvalidParamOfEmployeeException, ParseException {
+        SimpleDateFormat format = new SimpleDateFormat();
+        format.applyPattern("yyyy-MM-dd");
+        Date disnissalDate = format.parse(dateOfDismissal);
+        if (employeeService.isThereEmployee(id)) {
+            if (employeeService.checkDateOfDismissal(id, disnissalDate)) {
+                employeeService.dismissEmployeeById(id, disnissalDate);
+            } else {
+                throw new InvalidParamOfEmployeeException();
+            }
+        } else {
+            throw new InvalidValueOfEmployeeIdException();
+        }
+    }
+
+    @RequestMapping(value = "/swapEmployeeToDepartment/{idEmployee}/{idPointer}", method = RequestMethod.PUT)
+    public void swapEmployeeToDepartment(@PathVariable("idEmployee") int idEmployee, @PathVariable("idPointer") int idPointer) throws InvalidValueOfEmployeeIdException, InvalidParamOfEmployeeException {
+        if (employeeService.isThereEmployee(idEmployee)) {
+            employeeService.swapEmployeeToDepartment(idEmployee, idPointer);
+            logger.info("Update successful");
+        } else {
+            throw new InvalidValueOfEmployeeIdException();
+        }
+    }
 }
