@@ -2,7 +2,6 @@ package com.altarix.exercisetwo.companystructuremanagement.controllers;
 
 import com.altarix.exercisetwo.companystructuremanagement.domain.Employee;
 import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidParamOfEmployeeException;
-import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfDataException;
 import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfDepartmentIdException;
 import com.altarix.exercisetwo.companystructuremanagement.service.EmployeeService;
 import org.apache.log4j.Logger;
@@ -33,9 +32,18 @@ public class EmployeeController {
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     public void add(@RequestBody Employee employee) throws InvalidParamOfEmployeeException {
-        if (employeeService.checkValidDataOfEmployee(employee)){
+        if (employeeService.checkValidDataOfEmployee(employee)) {
             employeeService.add(employee);
             logger.info("Upload succeeded");
+        } else {
+            throw new InvalidParamOfEmployeeException();
+        }
+    }
+
+    @RequestMapping(value = "/putEmployee", method = RequestMethod.PUT)
+    public Employee update(@RequestBody Employee employee) throws InvalidParamOfEmployeeException {
+        if (employeeService.checkValidDataOfEmployee(employee)) {
+            return employeeService.update(employee);
         } else {
             throw new InvalidParamOfEmployeeException();
         }

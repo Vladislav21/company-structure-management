@@ -10,7 +10,7 @@
                                phone_number, mail, employment_date, date_of_dismissal,
                                position, salary, is_chief, department_id)
         VALUES (#{lastName}, #{firstName}, #{patronymic}, #{gender}, #{dateOfBirth}, #{phoneNumber},
-                             #{mail}, #{employmentDate}, NULL, #{position}, #{salary}, #{isChief}, #{departmentId})
+                             #{mail}, #{employmentDate}, NULL, #{position}, #{salary}, FALSE , #{departmentId})
     </insert>
 
     <select id="getListEmployeeByDepartmentId" resultMap="employeeMap">

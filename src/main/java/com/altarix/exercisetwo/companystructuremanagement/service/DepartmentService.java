@@ -2,7 +2,7 @@ package com.altarix.exercisetwo.companystructuremanagement.service;
 
 import com.altarix.exercisetwo.companystructuremanagement.dao.DepartmentDAO;
 import com.altarix.exercisetwo.companystructuremanagement.domain.Department;
-import org.apache.ibatis.annotations.Param;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +10,8 @@ import java.util.List;
 
 @Service
 public class DepartmentService {
+
+    private final static Logger logger = Logger.getLogger(DepartmentService.class.getSimpleName());
 
     @Autowired
     private DepartmentDAO departmentDAO;
@@ -22,7 +24,8 @@ public class DepartmentService {
 
     public Department update(int id, String name) {
         departmentDAO.update(id, firstUpperCase(name));
-        return departmentDAO.getDepartmentById(id);
+        logger.info("Update successful");
+        return getDepartmentById(id);
     }
 
     public void delete(int id) {

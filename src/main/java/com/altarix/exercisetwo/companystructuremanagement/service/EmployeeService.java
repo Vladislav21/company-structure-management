@@ -2,6 +2,7 @@ package com.altarix.exercisetwo.companystructuremanagement.service;
 
 import com.altarix.exercisetwo.companystructuremanagement.dao.EmployeeDAO;
 import com.altarix.exercisetwo.companystructuremanagement.domain.Employee;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ import java.util.regex.Pattern;
 
 @Service
 public class EmployeeService {
+
+    private final static Logger logger = Logger.getLogger(EmployeeService.class.getSimpleName());
 
     @Autowired
     private EmployeeDAO employeeDAO;
@@ -28,6 +31,7 @@ public class EmployeeService {
 
     public Employee update(Employee employee) {
         employeeDAO.update(employee);
+        logger.info("Update successful");
         return employeeDAO.getEmployeeById(employee.getId());
     }
 

@@ -51,9 +51,7 @@ public class DepartmentController {
     public Department update(@PathVariable("id") int id, @PathVariable("name") String name) throws InvalidValueOfDepartmentNameException, InvalidValueOfDepartmentIdException {
         if (departmentService.isThereDepartment(id)) {
             if (!departmentService.checkingDepartmentName(name)) {
-                departmentService.update(id, name);
-                logger.info("Update successful");
-                return departmentService.getDepartmentById(id);
+                return departmentService.update(id, name);
             } else {
                 throw new InvalidValueOfDepartmentNameException();
             }
