@@ -25,13 +25,25 @@ public interface EmployeeDAO {
 
     void swapAllEmployeesToDepartment(@Param("idSwapped") int idSwapped, @Param("idPointer") int idPointer);
 
+    void swapAllEmployeesToDepartmentIfExistsChief(@Param("idSwapped") int idSwapped, @Param("idPointer") int idPointer);
+
     Employee getChiefByIdEmployee(@Param("id") int id);
 
-    Employee searchEmployeeByPhoneNumber(@Param("phoneNumber") String phoneNumber);
+    List<Employee> searchEmployeeByPhoneNumber(@Param("phoneNumber") String phoneNumber);
 
     boolean isThereEmployee(@Param("id") int id);
 
     Date getEmploymentDate(@Param("id") int id);
 
     Double getSalaryForEmployee(@Param("idEmployee") int idEmployee);
+
+    boolean isThereChief(@Param("id") int id);
+
+    boolean isThereDepartment(@Param("id") int id);
+
+    boolean isThereChiefCurrentEmployee(@Param("id") int id);
+
+    void updateDepartmentOnChief(@Param("idChief") int idChief);
+
+    Integer getChiefIdInCurrentDepartment(@Param("idDepartment") int idDepartment);
 }

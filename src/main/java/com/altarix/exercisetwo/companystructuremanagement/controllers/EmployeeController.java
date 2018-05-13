@@ -1,9 +1,7 @@
 package com.altarix.exercisetwo.companystructuremanagement.controllers;
 
 import com.altarix.exercisetwo.companystructuremanagement.domain.Employee;
-import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidParamOfEmployeeException;
-import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfDepartmentIdException;
-import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfEmployeeIdException;
+import com.altarix.exercisetwo.companystructuremanagement.exceptions.*;
 import com.altarix.exercisetwo.companystructuremanagement.service.EmployeeService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +89,36 @@ public class EmployeeController {
             logger.info("Update successful");
         } else {
             throw new InvalidValueOfEmployeeIdException();
+        }
+    }
+
+    @RequestMapping(value = "/swapAllEmployeesToDepartment/{idSwapped}/{idPointer}")
+    public void swapAllEmployeesToDepartment(@PathVariable("idSwapped") int idSwapped, @PathVariable("idPointer") int idPointer) throws InvalidValueOfDepartmentIdException, InvalidParamOfEmployeeException {
+        if (employeeService.isThereDepartment(idSwapped) && employeeService.isThereDepartment(idPointer)) {
+            employeeService.swapAllEmployeesToDepartment(idSwapped, idPointer);
+            logger.info("Update successful");
+        } else {
+            throw new InvalidValueOfDepartmentIdException();
+        }
+    }
+
+    @RequestMapping(value = "/getChiefByIdEmployee/{id}", method = RequestMethod.GET)
+    public Employee getChiefByIdEmployee(@PathVariable("id") int id) throws ChiefNotFoundException {
+        Employee chief = employeeService.getChiefByIdEmployee(id);
+        if (chief != null) {
+            return chief;
+        } else {
+            throw new ChiefNotFoundException();
+        }
+    }
+
+    @RequestMapping(value = "/searchEmployeeByPhoneNumber/{phoneNumber}", method = RequestMethod.GET)
+    public List<Employee> searchEmployeeByPhoneNumber(@PathVariable("phoneNumber") String phoneNumber) throws InvalidParamOfEmployeeException, EmployeesNotFoundException {
+        List<Employee> result = employeeService.searchEmployeeByPhoneNumber(phoneNumber);
+        if (!result.isEmpty()) {
+            return result;
+        } else {
+            throw new EmployeesNotFoundException();
         }
     }
 }

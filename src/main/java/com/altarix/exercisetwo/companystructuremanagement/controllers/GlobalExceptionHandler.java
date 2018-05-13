@@ -77,4 +77,22 @@ public class GlobalExceptionHandler {
         modelAndView.addObject("error", ex);
         return modelAndView;
     }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Chief is absent")
+    @ExceptionHandler(ChiefNotFoundException.class)
+    public ModelAndView handlerParseException(NotFoundParamOfCompanyException ex) {
+        logger.error("Chief is absent");
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("error", ex);
+        return modelAndView;
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Employees are absent")
+    @ExceptionHandler(EmployeesNotFoundException.class)
+    public ModelAndView handlerEmployeesNotFoundException(NotFoundParamOfCompanyException ex) {
+        logger.error("Employees are absent");
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("error", ex);
+        return modelAndView;
+    }
 }

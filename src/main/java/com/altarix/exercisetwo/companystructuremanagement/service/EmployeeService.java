@@ -48,22 +48,54 @@ public class EmployeeService {
 
     public void swapEmployeeToDepartment(int idEmployee, int idPointer) throws InvalidParamOfEmployeeException {
         if (checkSalary(employeeDAO.getSalaryForEmployee(idEmployee), idPointer)) {
-            employeeDAO.swapEmployeeToDepartment(idEmployee, idPointer);
+            if (employeeDAO.isThereChiefCurrentEmployee(idEmployee)) {
+                employeeDAO.updateDepartmentOnChief(idEmployee);
+                employeeDAO.swapEmployeeToDepartment(idEmployee, idPointer);
+            } else {
+                employeeDAO.swapEmployeeToDepartment(idEmployee, idPointer);
+            }
         } else {
             throw new InvalidParamOfEmployeeException();
         }
     }
 
-    public void swapAllEmployeesToDepartment(int idSwapped, int idPointer) {
-        employeeDAO.swapAllEmployeesToDepartment(idSwapped, idPointer);
+    public void swapAllEmployeesToDepartment(int idSwapped, int idPointer) throws InvalidParamOfEmployeeException {
+        if (employeeDAO.isThereChief(idPointer)) {
+            if (!employeeDAO.isThereChief(idSwapped)) {
+                employeeDAO.swapAllEmployeesToDepartmentIfExistsChief(idSwapped, idPointer);
+            } else {
+                int idChief = employeeDAO.getChiefIdInCurrentDepartment(idSwapped);
+                if (checkSalary(employeeDAO.getSalaryForEmployee(idChief), idPointer)) {
+                    employeeDAO.updateDepartmentOnChief(idChief);
+                    employeeDAO.swapAllEmployeesToDepartmentIfExistsChief(idSwapped, idPointer);
+                } else {
+                    throw new InvalidParamOfEmployeeException();
+                }
+            }
+        } else {
+            if (!employeeDAO.isThereChief(idSwapped)) {
+                employeeDAO.swapAllEmployeesToDepartment(idSwapped, idPointer);
+            } else {
+                int idChief = employeeDAO.getChiefIdInCurrentDepartment(idSwapped);
+                employeeDAO.updateDepartmentOnChief(idChief);
+                employeeDAO.swapAllEmployeesToDepartment(idSwapped, idPointer);
+            }
+        }
     }
 
     public Employee getChiefByIdEmployee(int id) {
         return employeeDAO.getChiefByIdEmployee(id);
     }
 
-    public Employee searchEmployeeByPhoneNumber(String phoneNumber) {
-        return employeeDAO.searchEmployeeByPhoneNumber(phoneNumber);
+    public List<Employee> searchEmployeeByPhoneNumber(String phoneNumber) throws InvalidParamOfEmployeeException {
+        if (checkPhoneNumber(phoneNumber)) {
+            String s = "%" +
+                    phoneNumber +
+                    "%";
+            return employeeDAO.searchEmployeeByPhoneNumber(s);
+        } else {
+            throw new InvalidParamOfEmployeeException();
+        }
     }
 
     public boolean isThereEmployee(int id) {
@@ -124,6 +156,10 @@ public class EmployeeService {
                 dateOfDismissal.getYear() == employmentDate.getYear()
                         && dateOfDismissal.getMonth() == employmentDate.getMonth()
                         && dateOfDismissal.getDay() >= employmentDate.getDay();
+    }
+
+    public boolean isThereDepartment(int id) {
+        return employeeDAO.isThereDepartment(id);
     }
 }
 

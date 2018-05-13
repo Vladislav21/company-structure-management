@@ -49,6 +49,45 @@
         WHERE id = #{idEmployee}
     </select>
 
+    <select id="isThereChief" resultType="Boolean">
+        SELECT exists(SELECT e.id
+                      FROM employees e
+                      WHERE e.is_chief = TRUE AND e.department_id = #{id})
+
+    </select>
+
+    <select id="isThereChiefCurrentEmployee" resultType="Boolean">
+        SELECT exists(SELECT e.id
+                      FROM employees e
+                      WHERE e.id = #{id} AND e.is_chief = TRUE)
+    </select>
+
+    <select id="isThereDepartment" resultType="Boolean">
+        SELECT exists(SELECT d.id
+                      FROM departments d
+                      WHERE d.id = #{id})
+    </select>
+
+    <select id="getChiefIdInCurrentDepartment" resultType="Integer">
+        SELECT e.id
+        FROM employees e
+        WHERE e.department_id = #{idDepartment} AND e.is_chief = TRUE
+    </select>
+
+    <select id="searchEmployeeByPhoneNumber" resultMap="employeeMap">
+        SELECT *
+        FROM employees e
+        WHERE e.phone_number LIKE #{phoneNumber}
+    </select>
+
+    <select id="getChiefByIdEmployee" resultMap="employeeMap">
+        SELECT *
+        FROM employees e
+        WHERE e.is_chief = TRUE AND e.department_id = (SELECT emp.department_id
+                                                       FROM employees emp
+                                                       WHERE emp.id = #{id})
+    </select>
+
     <update id="dismissEmployeeById">
         UPDATE employees
         SET
@@ -80,6 +119,34 @@
             department_id = #{idPointer},
             is_chief      = FALSE
         WHERE id = #{idEmployee}
+    </update>
+
+    <update id="updateDepartmentOnChief">
+        UPDATE departments
+        SET chief_id = NULL
+        WHERE id = (SELECT e.department_id
+                    FROM employees e
+                    WHERE e.id = #{idChief})
+    </update>
+
+    <update id="swapAllEmployeesToDepartmentIfExistsChief">
+        UPDATE employees
+        SET
+            department_id = #{idPointer},
+            is_chief      = FALSE
+        WHERE department_id = #{idSwapped} AND salary &lt;= (SELECT salary
+                                                             FROM employees e
+                                                             WHERE e.department_id =
+                                                                   #{idPointer} AND
+                                                                   e.is_chief = TRUE)
+    </update>
+
+    <update id="swapAllEmployeesToDepartment">
+        UPDATE employees
+        SET
+            department_id = #{idPointer},
+            is_chief      = FALSE
+        WHERE department_id = #{idSwapped}
     </update>
 
     <resultMap id="employeeMap" type="Employee">
