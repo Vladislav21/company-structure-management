@@ -84,8 +84,8 @@ public class DepartmentService {
         departmentDAO.appointChiefToEmployees(chiefId);
     }
 
-    public boolean checkEmployeesOfDepartment(int chiefId) {
-        return departmentDAO.checkEmployeesOfDepartment(chiefId);
+    public boolean checkEmployeesOfDepartment(int departmentId) {
+        return departmentDAO.checkEmployeesOfDepartment(departmentId);
     }
 
     public boolean checkExistenceEmployeeInDepartment(int id) {

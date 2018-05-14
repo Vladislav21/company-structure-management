@@ -2,7 +2,7 @@ package com.altarix.exercisetwo.companystructuremanagement.service;
 
 import com.altarix.exercisetwo.companystructuremanagement.dao.EmployeeDAO;
 import com.altarix.exercisetwo.companystructuremanagement.domain.Employee;
-import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidParamOfEmployeeException;
+import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidParametersOfEmployeeException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +46,7 @@ public class EmployeeService {
         return employeeDAO.getEmployeeById(id);
     }
 
-    public void swapEmployeeToDepartment(int idEmployee, int idPointer) throws InvalidParamOfEmployeeException {
+    public void swapEmployeeToDepartment(int idEmployee, int idPointer) throws InvalidParametersOfEmployeeException {
         if (checkSalary(employeeDAO.getSalaryForEmployee(idEmployee), idPointer)) {
             if (employeeDAO.isThereChiefCurrentEmployee(idEmployee)) {
                 employeeDAO.updateDepartmentOnChief(idEmployee);
@@ -55,7 +55,7 @@ public class EmployeeService {
                 employeeDAO.swapEmployeeToDepartment(idEmployee, idPointer);
             }
         } else {
-            throw new InvalidParamOfEmployeeException();
+            throw new InvalidParametersOfEmployeeException();
         }
     }
 
@@ -87,14 +87,14 @@ public class EmployeeService {
         return employeeDAO.getChiefByIdEmployee(id);
     }
 
-    public List<Employee> searchEmployeeByPhoneNumber(String phoneNumber) throws InvalidParamOfEmployeeException {
+    public List<Employee> searchEmployeeByPhoneNumber(String phoneNumber) throws InvalidParametersOfEmployeeException {
         if (checkPhoneNumber(phoneNumber)) {
             String s = "%" +
                     phoneNumber +
                     "%";
             return employeeDAO.searchEmployeeByPhoneNumber(s);
         } else {
-            throw new InvalidParamOfEmployeeException();
+            throw new InvalidParametersOfEmployeeException();
         }
     }
 

@@ -1,7 +1,7 @@
 package com.altarix.exercisetwo.companystructuremanagement.exceptions;
 
 @SuppressWarnings("serial")
-public class EmployeesNotFoundException extends NotFoundParamOfCompanyException {
+public class EmployeesNotFoundException extends NotFoundParametersOfCompanyException {
     public EmployeesNotFoundException() {
         super();
     }

@@ -31,7 +31,7 @@ public interface DepartmentDAO {
 
     int checkIdChief(@Param("chiefId") int chiefId);
 
-    boolean checkEmployeesOfDepartment(@Param("chiefId") int chiefId);
+    boolean checkEmployeesOfDepartment(@Param("departmentId") int departmentId);
 
     boolean checkExistenceEmployeeInDepartment(@Param("id") int id);
 

@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Departments are absent")
     @ExceptionHandler(DepartmentsNotFoundException.class)
-    public ModelAndView handlerDepartmentsNotFoundException(NotFoundParamOfCompanyException ex) {
+    public ModelAndView handlerDepartmentsNotFoundException(NotFoundParametersOfCompanyException ex) {
         logger.error("Departments are absent");
         ModelAndView modelAndView = new ModelAndView("error");
         modelAndView.addObject("error", ex);
@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Invalid parameters of employee")
-    @ExceptionHandler(InvalidParamOfEmployeeException.class)
+    @ExceptionHandler(InvalidParametersOfEmployeeException.class)
     public ModelAndView handlerInvalidParamOfEmployeeException(InvalidValueOfDataException ex) {
         logger.error("Invalid parameters of employee");
         ModelAndView modelAndView = new ModelAndView("error");
@@ -80,7 +80,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Chief is absent")
     @ExceptionHandler(ChiefNotFoundException.class)
-    public ModelAndView handlerParseException(NotFoundParamOfCompanyException ex) {
+    public ModelAndView handlerParseException(NotFoundParametersOfCompanyException ex) {
         logger.error("Chief is absent");
         ModelAndView modelAndView = new ModelAndView("error");
         modelAndView.addObject("error", ex);
@@ -89,7 +89,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Employees are absent")
     @ExceptionHandler(EmployeesNotFoundException.class)
-    public ModelAndView handlerEmployeesNotFoundException(NotFoundParamOfCompanyException ex) {
+    public ModelAndView handlerEmployeesNotFoundException(NotFoundParametersOfCompanyException ex) {
         logger.error("Employees are absent");
         ModelAndView modelAndView = new ModelAndView("error");
         modelAndView.addObject("error", ex);

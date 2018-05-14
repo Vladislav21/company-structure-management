@@ -54,13 +54,9 @@
     </select>
 
     <select id="checkEmployeesOfDepartment" resultType="Boolean">
-        WITH empl AS (
-        SELECT e.is_chief FROM employees e
-        WHERE e.department_id = ( SELECT e2.department_id FROM employees e2 WHERE e2.id = #{chiefId})
-        )
         SELECT exists(SELECT 1
-                      FROM empl e
-                      WHERE e.is_chief = TRUE)
+                      FROM employees e
+                      WHERE e.department_id = #{departmentId} AND e.is_chief = TRUE);
     </select>
 
     <select id="checkingDepartmentName" resultType="Boolean">

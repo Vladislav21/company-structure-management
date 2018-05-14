@@ -35,7 +35,7 @@ public class DepartmentController {
     public void appointChief(@PathVariable("idDepartment") int idDepartment, @PathVariable("idChief") int idChief) throws InvalidValueOfChiefException, InvalidValueOfDepartmentIdException {
         if (departmentService.isThereDepartment(idDepartment)) {
             if (departmentService.checkIdChief(idChief) == idDepartment
-                    && !departmentService.checkEmployeesOfDepartment(idChief)) {
+                    && !departmentService.checkEmployeesOfDepartment(idDepartment)) {
                 departmentService.appointChiefToDepartment(idChief, idDepartment);
                 departmentService.appointChiefToEmployees(idChief);
                 logger.info("The appointment of the chief was successful");

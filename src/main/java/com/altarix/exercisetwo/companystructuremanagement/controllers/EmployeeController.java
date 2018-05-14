@@ -33,23 +33,23 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public void add(@RequestBody Employee employee) throws InvalidParamOfEmployeeException {
+    public void add(@RequestBody Employee employee) throws InvalidParametersOfEmployeeException {
         if (employeeService.checkValidDataOfEmployee(employee)) {
             employeeService.add(employee);
             logger.info("Upload succeeded");
         } else {
-            throw new InvalidParamOfEmployeeException();
+            throw new InvalidParametersOfEmployeeException();
         }
     }
 
     @RequestMapping(value = "/putEmployee/{id}", method = RequestMethod.PUT)
-    public Employee update(@RequestBody Employee employee, @PathVariable("id") int id) throws InvalidParamOfEmployeeException, InvalidValueOfEmployeeIdException {
+    public Employee update(@RequestBody Employee employee, @PathVariable("id") int id) throws InvalidParametersOfEmployeeException, InvalidValueOfEmployeeIdException {
         if (employeeService.isThereEmployee(id)) {
             employee.setId(id);
             if (employeeService.checkValidDataOfEmployee(employee)) {
                 return employeeService.update(employee);
             } else {
-                throw new InvalidParamOfEmployeeException();
+                throw new InvalidParametersOfEmployeeException();
             }
         } else {
             throw new InvalidValueOfEmployeeIdException();
@@ -67,7 +67,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/dismissEmployee/{id}/{dateOfDismissal}", method = RequestMethod.PUT)
-    public void dismissEmployeeById(@PathVariable("id") int id, @PathVariable("dateOfDismissal") String dateOfDismissal) throws InvalidValueOfEmployeeIdException, InvalidParamOfEmployeeException, ParseException {
+    public void dismissEmployeeById(@PathVariable("id") int id, @PathVariable("dateOfDismissal") String dateOfDismissal) throws InvalidValueOfEmployeeIdException, InvalidParametersOfEmployeeException, ParseException {
         SimpleDateFormat format = new SimpleDateFormat();
         format.applyPattern("yyyy-MM-dd");
         Date disnissalDate = format.parse(dateOfDismissal);
@@ -75,7 +75,7 @@ public class EmployeeController {
             if (employeeService.checkDateOfDismissal(id, disnissalDate)) {
                 employeeService.dismissEmployeeById(id, disnissalDate);
             } else {
-                throw new InvalidParamOfEmployeeException();
+                throw new InvalidParametersOfEmployeeException();
             }
         } else {
             throw new InvalidValueOfEmployeeIdException();
@@ -83,7 +83,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/swapEmployeeToDepartment/{idEmployee}/{idPointer}", method = RequestMethod.PUT)
-    public void swapEmployeeToDepartment(@PathVariable("idEmployee") int idEmployee, @PathVariable("idPointer") int idPointer) throws InvalidValueOfEmployeeIdException, InvalidParamOfEmployeeException {
+    public void swapEmployeeToDepartment(@PathVariable("idEmployee") int idEmployee, @PathVariable("idPointer") int idPointer) throws InvalidValueOfEmployeeIdException, InvalidParametersOfEmployeeException {
         if (employeeService.isThereEmployee(idEmployee)) {
             employeeService.swapEmployeeToDepartment(idEmployee, idPointer);
             logger.info("Update successful");
@@ -113,7 +113,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/searchEmployeeByPhoneNumber/{phoneNumber}", method = RequestMethod.GET)
-    public List<Employee> searchEmployeeByPhoneNumber(@PathVariable("phoneNumber") String phoneNumber) throws InvalidParamOfEmployeeException, EmployeesNotFoundException {
+    public List<Employee> searchEmployeeByPhoneNumber(@PathVariable("phoneNumber") String phoneNumber) throws InvalidParametersOfEmployeeException, EmployeesNotFoundException {
         List<Employee> result = employeeService.searchEmployeeByPhoneNumber(phoneNumber);
         if (!result.isEmpty()) {
             return result;
