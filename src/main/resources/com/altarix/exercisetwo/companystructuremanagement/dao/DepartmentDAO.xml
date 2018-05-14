@@ -47,10 +47,10 @@
         WHERE id = #{idSwapped} AND parent_id IS NOT NULL
     </update>
 
-    <select id="checkIdChief" resultType="Integer">
+    <select id="getDepartmentIdForEmployee" resultType="Integer">
         SELECT e.department_id
         FROM employees e
-        WHERE e.id = #{chiefId}
+        WHERE e.id = #{employeeId}
     </select>
 
     <select id="checkEmployeesOfDepartment" resultType="Boolean">
@@ -76,7 +76,7 @@
         WHERE d.id = #{id}
     </select>
 
-    <select id="isThereChiefDepartment" resultType="Boolean">
+    <select id="checkExistenceDepartmentChief" resultType="Boolean">
         SELECT exists(SELECT 1
                       FROM departments d
                       WHERE d.id = #{id} AND d.chief_id NOTNULL)
@@ -95,13 +95,13 @@
                       WHERE e.department_id = #{id})
     </select>
 
-    <select id="isThereDepartment" resultType="Boolean">
+    <select id="checkExistenceDepartment" resultType="Boolean">
         SELECT exists(SELECT d.id
                       FROM departments d
                       WHERE d.id = #{id})
     </select>
 
-    <select id="getLowLvlDepartments" resultMap="departmentSimpleMap">
+    <select id="getDepartmentChildren" resultMap="departmentSimpleMap">
         SELECT
             d.name,
             d.creation_date
@@ -109,7 +109,7 @@
         WHERE d.parent_id = #{id}
     </select>
 
-    <select id="getAllLowLvlDepartments" resultMap="departmentSimpleMap">
+    <select id="getAllDepartmentChildren" resultMap="departmentSimpleMap">
         WITH RECURSIVE dep AS (
         SELECT
         d.id,
@@ -135,7 +135,7 @@
         FROM dep;
     </select>
 
-    <select id="getAllHighDepartments" resultMap="departmentSimpleMap">
+    <select id="getAllDepartmentParents" resultMap="departmentSimpleMap">
         WITH RECURSIVE dep AS (
         SELECT
         d.id,

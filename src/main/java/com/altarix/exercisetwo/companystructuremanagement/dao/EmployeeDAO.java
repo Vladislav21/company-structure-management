@@ -31,19 +31,19 @@ public interface EmployeeDAO {
 
     List<Employee> searchEmployeeByPhoneNumber(@Param("phoneNumber") String phoneNumber);
 
-    boolean isThereEmployee(@Param("id") int id);
+    boolean checkExistenceEmployee(@Param("id") int id);
 
     Date getEmploymentDate(@Param("id") int id);
 
     Double getSalaryForEmployee(@Param("idEmployee") int idEmployee);
 
-    boolean isThereChief(@Param("id") int id);
+    boolean checkExistenceChief(@Param("id") int id);
 
-    boolean isThereDepartment(@Param("id") int id);
+    boolean checkExistenceDepartment(@Param("id") int id);
 
-    boolean isThereChiefCurrentEmployee(@Param("id") int id);
+    boolean checkExistenceChiefCurrentEmployee(@Param("id") int id);
 
-    void updateDepartmentOnChief(@Param("idChief") int idChief);
+    void updateDepartmentChief(@Param("idChief") int idChief);
 
     Integer getChiefIdInCurrentDepartment(@Param("idDepartment") int idDepartment);
 }

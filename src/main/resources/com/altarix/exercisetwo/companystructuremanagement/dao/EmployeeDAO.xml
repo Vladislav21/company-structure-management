@@ -25,7 +25,7 @@
         WHERE e.department_id = #{idDepartment} AND e.is_chief = TRUE;
     </select>
 
-    <select id="isThereEmployee" resultType="Boolean">
+    <select id="checkExistenceEmployee" resultType="Boolean">
         SELECT exists(SELECT e.id
                       FROM employees e
                       WHERE e.id = #{id})
@@ -49,20 +49,20 @@
         WHERE id = #{idEmployee}
     </select>
 
-    <select id="isThereChief" resultType="Boolean">
+    <select id="checkExistenceChief" resultType="Boolean">
         SELECT exists(SELECT e.id
                       FROM employees e
                       WHERE e.is_chief = TRUE AND e.department_id = #{id})
 
     </select>
 
-    <select id="isThereChiefCurrentEmployee" resultType="Boolean">
+    <select id="checkExistenceChiefCurrentEmployee" resultType="Boolean">
         SELECT exists(SELECT e.id
                       FROM employees e
                       WHERE e.id = #{id} AND e.is_chief = TRUE)
     </select>
 
-    <select id="isThereDepartment" resultType="Boolean">
+    <select id="checkExistenceDepartment" resultType="Boolean">
         SELECT exists(SELECT d.id
                       FROM departments d
                       WHERE d.id = #{id})
@@ -121,7 +121,7 @@
         WHERE id = #{idEmployee}
     </update>
 
-    <update id="updateDepartmentOnChief">
+    <update id="updateDepartmentChief">
         UPDATE departments
         SET chief_id = NULL
         WHERE id = (SELECT e.department_id

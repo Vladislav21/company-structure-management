@@ -34,7 +34,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     public void add(@RequestBody Employee employee) throws InvalidParametersOfEmployeeException {
-        if (employeeService.checkValidDataOfEmployee(employee)) {
+        if (employeeService.checkValidateDataOfEmployee(employee)) {
             employeeService.add(employee);
             logger.info("Upload succeeded");
         } else {
@@ -44,9 +44,9 @@ public class EmployeeController {
 
     @RequestMapping(value = "/putEmployee/{id}", method = RequestMethod.PUT)
     public Employee update(@RequestBody Employee employee, @PathVariable("id") int id) throws InvalidParametersOfEmployeeException, InvalidValueOfEmployeeIdException {
-        if (employeeService.isThereEmployee(id)) {
+        if (employeeService.checkExistenceEmployee(id)) {
             employee.setId(id);
-            if (employeeService.checkValidDataOfEmployee(employee)) {
+            if (employeeService.checkValidateDataOfEmployee(employee)) {
                 return employeeService.update(employee);
             } else {
                 throw new InvalidParametersOfEmployeeException();
@@ -70,10 +70,10 @@ public class EmployeeController {
     public void dismissEmployeeById(@PathVariable("id") int id, @PathVariable("dateOfDismissal") String dateOfDismissal) throws InvalidValueOfEmployeeIdException, InvalidParametersOfEmployeeException, ParseException {
         SimpleDateFormat format = new SimpleDateFormat();
         format.applyPattern("yyyy-MM-dd");
-        Date disnissalDate = format.parse(dateOfDismissal);
-        if (employeeService.isThereEmployee(id)) {
-            if (employeeService.checkDateOfDismissal(id, disnissalDate)) {
-                employeeService.dismissEmployeeById(id, disnissalDate);
+        Date dismissalDate = format.parse(dateOfDismissal);
+        if (employeeService.checkExistenceEmployee(id)) {
+            if (employeeService.checkDateOfDismissal(id, dismissalDate)) {
+                employeeService.dismissEmployeeById(id, dismissalDate);
             } else {
                 throw new InvalidParametersOfEmployeeException();
             }
@@ -84,7 +84,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "/swapEmployeeToDepartment/{idEmployee}/{idPointer}", method = RequestMethod.PUT)
     public void swapEmployeeToDepartment(@PathVariable("idEmployee") int idEmployee, @PathVariable("idPointer") int idPointer) throws InvalidValueOfEmployeeIdException, InvalidParametersOfEmployeeException {
-        if (employeeService.isThereEmployee(idEmployee)) {
+        if (employeeService.checkExistenceEmployee(idEmployee)) {
             employeeService.swapEmployeeToDepartment(idEmployee, idPointer);
             logger.info("Update successful");
         } else {
@@ -94,7 +94,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "/swapAllEmployeesToDepartment/{idSwapped}/{idPointer}",method = RequestMethod.PUT)
     public void swapAllEmployeesToDepartment(@PathVariable("idSwapped") int idSwapped, @PathVariable("idPointer") int idPointer) throws InvalidValueOfDepartmentIdException {
-        if (employeeService.isThereDepartment(idSwapped) && employeeService.isThereDepartment(idPointer)) {
+        if (employeeService.checkExistenceDepartment(idSwapped) && employeeService.checkExistenceDepartment(idPointer)) {
             employeeService.swapAllEmployeesToDepartment(idSwapped, idPointer);
             logger.info("Update successful");
         } else {

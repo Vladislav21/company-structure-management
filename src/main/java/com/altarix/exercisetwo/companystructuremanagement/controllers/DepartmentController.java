@@ -33,8 +33,8 @@ public class DepartmentController {
 
     @RequestMapping(value = "/appointChief/{idDepartment}/{idChief}", method = RequestMethod.PUT)
     public void appointChief(@PathVariable("idDepartment") int idDepartment, @PathVariable("idChief") int idChief) throws InvalidValueOfChiefException, InvalidValueOfDepartmentIdException {
-        if (departmentService.isThereDepartment(idDepartment)) {
-            if (departmentService.checkIdChief(idChief) == idDepartment
+        if (departmentService.checkExistenceDepartment(idDepartment)) {
+            if (departmentService.getDepartmentIdForEmployee(idChief) == idDepartment
                     && !departmentService.checkEmployeesOfDepartment(idDepartment)) {
                 departmentService.appointChiefToDepartment(idChief, idDepartment);
                 departmentService.appointChiefToEmployees(idChief);
@@ -49,7 +49,7 @@ public class DepartmentController {
 
     @RequestMapping(value = "/putName/{id}/{name}", method = RequestMethod.PUT)
     public Department update(@PathVariable("id") int id, @PathVariable("name") String name) throws InvalidValueOfDepartmentNameException, InvalidValueOfDepartmentIdException {
-        if (departmentService.isThereDepartment(id)) {
+        if (departmentService.checkExistenceDepartment(id)) {
             if (!departmentService.checkingDepartmentName(name)) {
                 return departmentService.update(id, name);
             } else {
@@ -62,7 +62,7 @@ public class DepartmentController {
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable("id") int id) throws InvalidValueOfDepartmentIdException {
-        if (departmentService.isThereDepartment(id)) {
+        if (departmentService.checkExistenceDepartment(id)) {
             if (!departmentService.checkExistenceEmployeeInDepartment(id)) {
                 departmentService.delete(id);
                 logger.info("Uninstall succeeded");
@@ -86,7 +86,7 @@ public class DepartmentController {
 
     @RequestMapping(value = "/getLowLvlDepartments/{id}", method = RequestMethod.GET)
     public List<Department> getLowLvlDepartments(@PathVariable("id") int id) throws DepartmentsNotFoundException {
-        List<Department> result = departmentService.getLowLvlDepartments(id);
+        List<Department> result = departmentService.getDepartmentChildren(id);
         if (!result.isEmpty()) {
             return result;
         } else {
@@ -96,7 +96,7 @@ public class DepartmentController {
 
     @RequestMapping(value = "/getAllLowLvlDepartments/{id}", method = RequestMethod.GET)
     public List<Department> getAllLowLvlDepartments(@PathVariable("id") int id) throws DepartmentsNotFoundException {
-        List<Department> result = departmentService.getAllLowLvlDepartments(id);
+        List<Department> result = departmentService.getAllDepartmentChildren(id);
         if (!result.isEmpty()) {
             return result;
         } else {
@@ -106,7 +106,7 @@ public class DepartmentController {
 
     @RequestMapping(value = "/swapDepartment/{idSwapped}/{idPointer}", method = RequestMethod.PUT)
     public void swapDepartment(@PathVariable("idSwapped") int idSwapped, @PathVariable("idPointer") int idPointer) throws InvalidValueOfDepartmentIdException {
-        if (departmentService.isThereDepartment(idSwapped)) {
+        if (departmentService.checkExistenceDepartment(idSwapped)) {
             departmentService.swapDepartment(idSwapped, idPointer);
             logger.info("Update successful");
         } else {
@@ -116,7 +116,7 @@ public class DepartmentController {
 
     @RequestMapping(value = "/getAllHighDepartments/{id}", method = RequestMethod.GET)
     public List<Department> getAllHighDepartments(@PathVariable("id") int id) throws DepartmentsNotFoundException {
-        List<Department> result = departmentService.getAllHighDepartments(id);
+        List<Department> result = departmentService.getAllDepartmentParents(id);
         if (!result.isEmpty()) {
             return result;
         } else {
@@ -136,7 +136,7 @@ public class DepartmentController {
 
     @RequestMapping(value = "/getFundOfSalary/{id}", method = RequestMethod.GET)
     public double getFundOfSalary(@PathVariable("id") int id) throws InvalidValueOfDepartmentIdException {
-        if (departmentService.isThereDepartment(id) && departmentService.checkExistenceEmployeeInDepartment(id)) {
+        if (departmentService.checkExistenceDepartment(id) && departmentService.checkExistenceEmployeeInDepartment(id)) {
             return departmentService.getFundOfSalary(id);
         } else {
             throw new InvalidValueOfDepartmentIdException();

@@ -17,19 +17,19 @@ public interface DepartmentDAO {
 
     Department getDepartmentByIdWithoutChief(@Param("id") int id);
 
-    List<Department> getLowLvlDepartments(@Param("id") int id);
+    List<Department> getDepartmentChildren(@Param("id") int id);
 
-    List<Department> getAllLowLvlDepartments(@Param("id") int id);
+    List<Department> getAllDepartmentChildren(@Param("id") int id);
 
     void swapDepartment(@Param("idSwapped") int idSwapped, @Param("idPointer") int idPointer);
 
-    List<Department> getAllHighDepartments(@Param("id") int id);
+    List<Department> getAllDepartmentParents(@Param("id") int id);
 
     List<Department> searchDepartmentByName(@Param("name") String name);
 
     double getFundOfSalary(@Param("id") int id);
 
-    int checkIdChief(@Param("chiefId") int chiefId);
+    int getDepartmentIdForEmployee(@Param("employeeId") int employeeId);
 
     boolean checkEmployeesOfDepartment(@Param("departmentId") int departmentId);
 
@@ -37,9 +37,9 @@ public interface DepartmentDAO {
 
     boolean checkingDepartmentName(@Param("name") String name);
 
-    boolean isThereChiefDepartment(@Param("id")int id);
+    boolean checkExistenceDepartmentChief(@Param("id") int id);
 
-    boolean isThereDepartment(@Param("id")int id);
+    boolean checkExistenceDepartment(@Param("id") int id);
 
     void appointChiefToEmployees(@Param("chiefId") int chiefId);
 

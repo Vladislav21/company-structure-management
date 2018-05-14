@@ -33,7 +33,7 @@ public class DepartmentService {
     }
 
     public Department getDepartmentById(int id) {
-        if (departmentDAO.isThereChiefDepartment(id)) {
+        if (departmentDAO.checkExistenceDepartmentChief(id)) {
             return departmentDAO.getDepartmentById(id);
         } else {
             return departmentDAO.getDepartmentByIdWithoutChief(id);
@@ -48,28 +48,28 @@ public class DepartmentService {
         return departmentDAO.searchDepartmentByName(s);
     }
 
-    public List<Department> getLowLvlDepartments(int id) {
-        return departmentDAO.getLowLvlDepartments(id);
+    public List<Department> getDepartmentChildren(int id) {
+        return departmentDAO.getDepartmentChildren(id);
     }
 
-    public List<Department> getAllLowLvlDepartments(int id) {
-        return departmentDAO.getAllLowLvlDepartments(id);
+    public List<Department> getAllDepartmentChildren(int id) {
+        return departmentDAO.getAllDepartmentChildren(id);
     }
 
     public void swapDepartment(int idSwapped, int idPointer) {
         departmentDAO.swapDepartment(idSwapped, idPointer);
     }
 
-    public List<Department> getAllHighDepartments(int id) {
-        return departmentDAO.getAllHighDepartments(id);
+    public List<Department> getAllDepartmentParents(int id) {
+        return departmentDAO.getAllDepartmentParents(id);
     }
 
     public double getFundOfSalary(int id) {
         return departmentDAO.getFundOfSalary(id);
     }
 
-    public int checkIdChief(int chiefId) {
-        return departmentDAO.checkIdChief(chiefId);
+    public int getDepartmentIdForEmployee(int employeeId) {
+        return departmentDAO.getDepartmentIdForEmployee(employeeId);
     }
 
     public boolean checkingDepartmentName(String name) {
@@ -92,8 +92,8 @@ public class DepartmentService {
         return departmentDAO.checkExistenceEmployeeInDepartment(id);
     }
 
-    public boolean isThereDepartment(int id) {
-        return departmentDAO.isThereDepartment(id);
+    public boolean checkExistenceDepartment(int id) {
+        return departmentDAO.checkExistenceDepartment(id);
     }
 
     private String firstUpperCase(String word) {
