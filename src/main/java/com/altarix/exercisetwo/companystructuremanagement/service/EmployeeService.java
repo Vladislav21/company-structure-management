@@ -59,7 +59,7 @@ public class EmployeeService {
         }
     }
 
-    public void swapAllEmployeesToDepartment(int idSwapped, int idPointer) throws InvalidParamOfEmployeeException {
+    public void swapAllEmployeesToDepartment(int idSwapped, int idPointer){
         if (employeeDAO.isThereChief(idPointer)) {
             if (!employeeDAO.isThereChief(idSwapped)) {
                 employeeDAO.swapAllEmployeesToDepartmentIfExistsChief(idSwapped, idPointer);
@@ -69,7 +69,7 @@ public class EmployeeService {
                     employeeDAO.updateDepartmentOnChief(idChief);
                     employeeDAO.swapAllEmployeesToDepartmentIfExistsChief(idSwapped, idPointer);
                 } else {
-                    throw new InvalidParamOfEmployeeException();
+                    employeeDAO.swapAllEmployeesToDepartmentIfExistsChief(idSwapped, idPointer);
                 }
             }
         } else {
