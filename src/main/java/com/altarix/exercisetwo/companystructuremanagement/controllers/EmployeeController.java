@@ -92,7 +92,7 @@ public class EmployeeController {
         }
     }
 
-    @RequestMapping(value = "/swapAllEmployeesToDepartment/{idSwapped}/{idPointer}")
+    @RequestMapping(value = "/swapAllEmployeesToDepartment/{idSwapped}/{idPointer}",method = RequestMethod.PUT)
     public void swapAllEmployeesToDepartment(@PathVariable("idSwapped") int idSwapped, @PathVariable("idPointer") int idPointer) throws InvalidValueOfDepartmentIdException {
         if (employeeService.isThereDepartment(idSwapped) && employeeService.isThereDepartment(idPointer)) {
             employeeService.swapAllEmployeesToDepartment(idSwapped, idPointer);

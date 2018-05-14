@@ -25,6 +25,8 @@ repositories {
 
 
 dependencies {
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
 	compile group: 'javax.mail', name: 'mail', version: '1.4.7'
 	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.7.3'
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
