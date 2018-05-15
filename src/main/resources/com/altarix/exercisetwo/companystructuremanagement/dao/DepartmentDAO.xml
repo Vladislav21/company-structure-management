@@ -4,19 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.altarix.exercisetwo.companystructuremanagement.dao.DepartmentDAO">
 
-
-    <sql id="baseParam">
-        d.name,
-        d.creation_date,
-        ( select count (e.id) from employees e where e.department_id = #{id}) as number_of_employees,
-        e.last_name || ' ' ||e.first_name|| ' '|| e.patronymic as chief_of_department
-    </sql>
-
-    <sql id="baseJoin">
-        from departments d
-        join employees e ON d.id = e.department_id
-    </sql>
-
     <insert id="add" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO departments (name, creation_date, chief_id, parent_id)
         VALUES (#{name}, #{creationDate}, NULL, #{parentId});
@@ -73,8 +60,8 @@
 
     <select id="checkExistenceEmployee" resultType="Boolean">
         SELECT exists(SELECT e.id
-        FROM employees e
-        WHERE e.id = #{id} AND e.date_of_dismissal IS NULL)
+                      FROM employees e
+                      WHERE e.id = #{id} AND e.date_of_dismissal IS NULL)
     </select>
 
     <select id="checkExistenceDateOfDismissal" resultType="Boolean">
@@ -108,9 +95,15 @@
 
     <select id="getDepartmentById" resultMap="departmentMap">
         SELECT
-        <include refid="baseParam"/>
-        <include refid="baseJoin"/>
-        where e.department_id = #{id} and e.is_chief = TRUE
+            d.name,
+            d.creation_date,
+            (SELECT count(e.id)
+             FROM employees e
+             WHERE e.department_id = #{id})                           AS number_of_employees,
+            e.last_name || ' ' || e.first_name || ' ' || e.patronymic AS chief_of_department
+        FROM departments d
+            JOIN employees e ON d.id = e.department_id
+        WHERE e.department_id = #{id} AND e.is_chief = TRUE
     </select>
 
     <select id="checkExistenceEmployeeInDepartment" resultType="Boolean">
