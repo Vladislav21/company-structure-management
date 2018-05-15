@@ -82,7 +82,7 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/getLowLvlDepartments/{id}", method = RequestMethod.GET)
-    public List<Department> getLowLvlDepartments(@PathVariable("id") int id) throws DepartmentsNotFoundException {
+    public List<Department> getDepartmentChildren(@PathVariable("id") int id) throws DepartmentsNotFoundException {
         List<Department> result = departmentService.getDepartmentChildren(id);
         if (!result.isEmpty()) {
             return result;
@@ -92,7 +92,7 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/getAllLowLvlDepartments/{id}", method = RequestMethod.GET)
-    public List<Department> getAllLowLvlDepartments(@PathVariable("id") int id) throws DepartmentsNotFoundException {
+    public List<Department> getAllDepartmentChildren(@PathVariable("id") int id) throws DepartmentsNotFoundException {
         List<Department> result = departmentService.getAllDepartmentChildren(id);
         if (!result.isEmpty()) {
             return result;
@@ -112,7 +112,7 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/getAllHighDepartments/{id}", method = RequestMethod.GET)
-    public List<Department> getAllHighDepartments(@PathVariable("id") int id) throws DepartmentsNotFoundException {
+    public List<Department> getAllDepartmentParents(@PathVariable("id") int id) throws DepartmentsNotFoundException {
         List<Department> result = departmentService.getAllDepartmentParents(id);
         if (!result.isEmpty()) {
             return result;
