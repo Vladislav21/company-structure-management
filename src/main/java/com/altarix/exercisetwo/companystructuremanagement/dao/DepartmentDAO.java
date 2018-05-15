@@ -47,6 +47,8 @@ public interface DepartmentDAO {
 
     boolean checkExistenceDateOfDismissal(@Param("employeeId") int employeeId);
 
+    boolean checkExistenceEmployee(@Param("id") int id);
+
     void saveInfoAboutFundOfSalary();
 
     void saveActionIntoLogs(@Param("action") String action);

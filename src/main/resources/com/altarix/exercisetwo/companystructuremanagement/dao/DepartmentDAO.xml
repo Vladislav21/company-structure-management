@@ -71,6 +71,12 @@
                       WHERE e.department_id = #{departmentId} AND e.is_chief = TRUE);
     </select>
 
+    <select id="checkExistenceEmployee" resultType="Boolean">
+        SELECT exists(SELECT e.id
+        FROM employees e
+        WHERE e.id = #{id} AND e.date_of_dismissal IS NULL)
+    </select>
+
     <select id="checkExistenceDateOfDismissal" resultType="Boolean">
         SELECT exists(SELECT e.date_of_dismissal
                       FROM employees e

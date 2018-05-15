@@ -30,18 +30,22 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/appointChief/{idDepartment}/{idChief}", method = RequestMethod.PUT)
-    public void appointChief(@PathVariable("idDepartment") int idDepartment, @PathVariable("idChief") int idChief) throws InvalidValueOfChiefException, InvalidValueOfDepartmentIdException, UnavailableOperationForEmployeeException {
-        if (departmentService.checkExistenceDepartment(idDepartment)) {
-            if (departmentService.getDepartmentIdForEmployee(idChief) == idDepartment
-                    && !departmentService.checkEmployeesOfDepartment(idDepartment)) {
-                departmentService.appointChiefToDepartment(idChief, idDepartment);
-                departmentService.appointChiefToEmployees(idChief);
-                logger.info("The appointment of the chief was successful");
+    public void appointChief(@PathVariable("idDepartment") int idDepartment, @PathVariable("idChief") int idChief) throws InvalidValueOfChiefException, InvalidValueOfDepartmentIdException, UnavailableOperationForEmployeeException, InvalidValueOfEmployeeIdException {
+        if (departmentService.checkExistenceEmployee(idChief)) {
+            if (departmentService.checkExistenceDepartment(idDepartment)) {
+                if (departmentService.getDepartmentIdForEmployee(idChief) == idDepartment
+                        && !departmentService.checkEmployeesOfDepartment(idDepartment)) {
+                    departmentService.appointChiefToDepartment(idChief, idDepartment);
+                    departmentService.appointChiefToEmployees(idChief);
+                    logger.info("The appointment of the chief was successful");
+                } else {
+                    throw new InvalidValueOfChiefException();
+                }
             } else {
-                throw new InvalidValueOfChiefException();
+                throw new InvalidValueOfDepartmentIdException();
             }
         } else {
-            throw new InvalidValueOfDepartmentIdException();
+            throw new InvalidValueOfEmployeeIdException();
         }
     }
 

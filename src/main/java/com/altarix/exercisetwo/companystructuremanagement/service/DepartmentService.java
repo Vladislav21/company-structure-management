@@ -115,6 +115,10 @@ public class DepartmentService {
         return departmentDAO.checkExistenceDateOfDismissal(employeeId);
     }
 
+    public boolean checkExistenceEmployee(int id) {
+        return departmentDAO.checkExistenceEmployee(id);
+    }
+
     public void saveActionIntoLogs(String action) {
         departmentDAO.saveActionIntoLogs(action);
     }
