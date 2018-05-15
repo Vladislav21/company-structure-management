@@ -23,6 +23,7 @@ public class DepartmentController {
         if (!departmentService.checkingDepartmentName(department.getName())) {
             departmentService.add(department);
             logger.info("Upload succeeded");
+            departmentService.saveActionIntoLogs("Upload succeeded");
         } else {
             throw new InvalidValueOfDepartmentNameException();
         }
@@ -63,6 +64,7 @@ public class DepartmentController {
             if (!departmentService.checkExistenceEmployeeInDepartment(id)) {
                 departmentService.delete(id);
                 logger.info("Uninstall succeeded");
+                departmentService.saveActionIntoLogs("Uninstall succeeded");
             } else {
                 throw new InvalidValueOfDepartmentIdException();
             }
@@ -105,7 +107,8 @@ public class DepartmentController {
     public void swapDepartment(@PathVariable("idSwapped") int idSwapped, @PathVariable("idPointer") int idPointer) throws InvalidValueOfDepartmentIdException {
         if (departmentService.checkExistenceDepartment(idSwapped)) {
             departmentService.swapDepartment(idSwapped, idPointer);
-            logger.info("Update successful");
+            logger.info("Swapping successful");
+            departmentService.saveActionIntoLogs("Swapping successful");
         } else {
             throw new InvalidValueOfDepartmentIdException();
         }

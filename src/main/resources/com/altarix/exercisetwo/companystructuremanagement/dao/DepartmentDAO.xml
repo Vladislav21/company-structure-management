@@ -30,6 +30,10 @@
                                                               GROUP BY e.department_id
     </insert>
 
+    <insert id="saveActionIntoLogs">
+        INSERT INTO logs_of_department (action) VALUES (#{action})
+    </insert>
+
     <update id="appointChiefToDepartment">
         UPDATE departments
         SET chief_id = #{chiefId}

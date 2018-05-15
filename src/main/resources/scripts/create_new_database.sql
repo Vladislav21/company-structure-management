@@ -68,4 +68,12 @@ CREATE TABLE funds (
   MATCH SIMPLE
   ON UPDATE NO ACTION
   ON DELETE CASCADE
-)
+);
+
+CREATE TABLE logs_of_department (
+  id     SERIAL,
+  action CHARACTER VARYING(255) NOT NULL,
+  date   DATE DEFAULT now(),
+  CONSTRAINT pk_logs_of_department PRIMARY KEY (id)
+);
+

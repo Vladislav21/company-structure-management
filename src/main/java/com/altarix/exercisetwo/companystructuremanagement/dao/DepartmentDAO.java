@@ -49,4 +49,6 @@ public interface DepartmentDAO {
 
     void saveInfoAboutFundOfSalary();
 
+    void saveActionIntoLogs(@Param("action") String action);
+
 }

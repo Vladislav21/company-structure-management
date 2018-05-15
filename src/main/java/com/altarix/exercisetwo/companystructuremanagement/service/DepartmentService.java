@@ -27,6 +27,7 @@ public class DepartmentService {
     public Department update(int id, String name) {
         departmentDAO.update(id, firstUpperCase(name));
         logger.info("Update successful");
+        saveActionIntoLogs("Update successful");
         return getDepartmentById(id);
     }
 
@@ -112,6 +113,10 @@ public class DepartmentService {
 
     private boolean checkExistenceDateOfDismissal(int employeeId) {
         return departmentDAO.checkExistenceDateOfDismissal(employeeId);
+    }
+
+    public void saveActionIntoLogs(String action) {
+        departmentDAO.saveActionIntoLogs(action);
     }
 
     @Scheduled(fixedRate = 300000)
