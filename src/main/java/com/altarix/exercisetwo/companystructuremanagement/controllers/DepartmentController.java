@@ -1,10 +1,7 @@
 package com.altarix.exercisetwo.companystructuremanagement.controllers;
 
 import com.altarix.exercisetwo.companystructuremanagement.domain.Department;
-import com.altarix.exercisetwo.companystructuremanagement.exceptions.DepartmentsNotFoundException;
-import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfChiefException;
-import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfDepartmentIdException;
-import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidValueOfDepartmentNameException;
+import com.altarix.exercisetwo.companystructuremanagement.exceptions.*;
 import com.altarix.exercisetwo.companystructuremanagement.service.DepartmentService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +29,7 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/appointChief/{idDepartment}/{idChief}", method = RequestMethod.PUT)
-    public void appointChief(@PathVariable("idDepartment") int idDepartment, @PathVariable("idChief") int idChief) throws InvalidValueOfChiefException, InvalidValueOfDepartmentIdException {
+    public void appointChief(@PathVariable("idDepartment") int idDepartment, @PathVariable("idChief") int idChief) throws InvalidValueOfChiefException, InvalidValueOfDepartmentIdException, UnavailableOperationForEmployeeException {
         if (departmentService.checkExistenceDepartment(idDepartment)) {
             if (departmentService.getDepartmentIdForEmployee(idChief) == idDepartment
                     && !departmentService.checkEmployeesOfDepartment(idDepartment)) {

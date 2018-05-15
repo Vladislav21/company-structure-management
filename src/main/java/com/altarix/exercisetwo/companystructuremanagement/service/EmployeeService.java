@@ -3,6 +3,7 @@ package com.altarix.exercisetwo.companystructuremanagement.service;
 import com.altarix.exercisetwo.companystructuremanagement.dao.EmployeeDAO;
 import com.altarix.exercisetwo.companystructuremanagement.domain.Employee;
 import com.altarix.exercisetwo.companystructuremanagement.exceptions.InvalidParametersOfEmployeeException;
+import com.altarix.exercisetwo.companystructuremanagement.exceptions.UnavailableOperationForEmployeeException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,10 +32,14 @@ public class EmployeeService {
         employeeDAO.add(employee);
     }
 
-    public Employee update(Employee employee) {
-        employeeDAO.update(employee);
-        logger.info("Update successful");
-        return getEmployeeById(employee.getId());
+    public Employee update(Employee employee) throws UnavailableOperationForEmployeeException {
+        if (!checkExistenceDateOfDismissal(employee.getId())) {
+            employeeDAO.update(employee);
+            logger.info("Update successful");
+            return getEmployeeById(employee.getId());
+        } else {
+            throw new UnavailableOperationForEmployeeException();
+        }
     }
 
     public void dismissEmployeeById(int id, Date dateOfDismissal) {
@@ -46,16 +51,20 @@ public class EmployeeService {
         return employeeDAO.getEmployeeById(id);
     }
 
-    public void swapEmployeeToDepartment(int idEmployee, int idPointer) throws InvalidParametersOfEmployeeException {
-        if (checkSalary(employeeDAO.getSalaryForEmployee(idEmployee), idPointer)) {
-            if (employeeDAO.checkExistenceChiefCurrentEmployee(idEmployee)) {
-                employeeDAO.updateDepartmentChief(idEmployee);
-                employeeDAO.swapEmployeeToDepartment(idEmployee, idPointer);
+    public void swapEmployeeToDepartment(int idEmployee, int idPointer) throws InvalidParametersOfEmployeeException, UnavailableOperationForEmployeeException {
+        if (!checkExistenceDateOfDismissal(idEmployee)) {
+            if (checkSalary(employeeDAO.getSalaryForEmployee(idEmployee), idPointer)) {
+                if (employeeDAO.checkExistenceChiefCurrentEmployee(idEmployee)) {
+                    employeeDAO.updateDepartmentChief(idEmployee);
+                    employeeDAO.swapEmployeeToDepartment(idEmployee, idPointer);
+                } else {
+                    employeeDAO.swapEmployeeToDepartment(idEmployee, idPointer);
+                }
             } else {
-                employeeDAO.swapEmployeeToDepartment(idEmployee, idPointer);
+                throw new InvalidParametersOfEmployeeException();
             }
         } else {
-            throw new InvalidParametersOfEmployeeException();
+            throw new UnavailableOperationForEmployeeException();
         }
     }
 
@@ -83,8 +92,12 @@ public class EmployeeService {
         }
     }
 
-    public Employee getChiefByIdEmployee(int id) {
-        return employeeDAO.getChiefByIdEmployee(id);
+    public Employee getChiefByIdEmployee(int id) throws UnavailableOperationForEmployeeException {
+        if (!checkExistenceDateOfDismissal(id)) {
+            return employeeDAO.getChiefByIdEmployee(id);
+        } else {
+            throw new UnavailableOperationForEmployeeException();
+        }
     }
 
     public List<Employee> searchEmployeeByPhoneNumber(String phoneNumber) throws InvalidParametersOfEmployeeException {
@@ -160,6 +173,10 @@ public class EmployeeService {
 
     public boolean checkExistenceDepartment(int id) {
         return employeeDAO.checkExistenceDepartment(id);
+    }
+
+    private boolean checkExistenceDateOfDismissal(int employeeId) {
+        return employeeDAO.checkExistenceDateOfDismissal(employeeId);
     }
 }
 

@@ -45,4 +45,6 @@ public interface DepartmentDAO {
 
     void appointChiefToDepartment(@Param("chiefId") int chiefId, @Param("id") int id);
 
+    boolean checkExistenceDateOfDismissal(@Param("employeeId") int employeeId);
+
 }

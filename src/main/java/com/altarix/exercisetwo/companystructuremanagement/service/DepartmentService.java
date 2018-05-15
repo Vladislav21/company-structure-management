@@ -2,6 +2,7 @@ package com.altarix.exercisetwo.companystructuremanagement.service;
 
 import com.altarix.exercisetwo.companystructuremanagement.dao.DepartmentDAO;
 import com.altarix.exercisetwo.companystructuremanagement.domain.Department;
+import com.altarix.exercisetwo.companystructuremanagement.exceptions.UnavailableOperationForEmployeeException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,12 +77,20 @@ public class DepartmentService {
         return departmentDAO.checkingDepartmentName(firstUpperCase(name));
     }
 
-    public void appointChiefToDepartment(int chiefId, int id) {
-        departmentDAO.appointChiefToDepartment(chiefId, id);
+    public void appointChiefToDepartment(int chiefId, int id) throws UnavailableOperationForEmployeeException {
+        if (!checkExistenceDateOfDismissal(chiefId)) {
+            departmentDAO.appointChiefToDepartment(chiefId, id);
+        } else {
+            throw new UnavailableOperationForEmployeeException();
+        }
     }
 
-    public void appointChiefToEmployees(int chiefId) {
-        departmentDAO.appointChiefToEmployees(chiefId);
+    public void appointChiefToEmployees(int chiefId) throws UnavailableOperationForEmployeeException {
+        if (!checkExistenceDateOfDismissal(chiefId)) {
+            departmentDAO.appointChiefToEmployees(chiefId);
+        } else {
+            throw new UnavailableOperationForEmployeeException();
+        }
     }
 
     public boolean checkEmployeesOfDepartment(int departmentId) {
@@ -98,6 +107,10 @@ public class DepartmentService {
 
     private String firstUpperCase(String word) {
         return word.substring(0, 1).toUpperCase() + word.substring(1);
+    }
+
+    private boolean checkExistenceDateOfDismissal(int employeeId) {
+        return departmentDAO.checkExistenceDateOfDismissal(employeeId);
     }
 
 }

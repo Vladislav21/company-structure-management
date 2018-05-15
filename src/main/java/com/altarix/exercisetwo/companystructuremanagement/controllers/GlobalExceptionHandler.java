@@ -95,4 +95,13 @@ public class GlobalExceptionHandler {
         modelAndView.addObject("error", ex);
         return modelAndView;
     }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "This employee is fired")
+    @ExceptionHandler(UnavailableOperationForEmployeeException.class)
+    public ModelAndView handlerUnavailableOperationExceptionForEmployee(UnavailableOperationForEmployeeException ex) {
+        logger.error("This employee is fired");
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("error", ex);
+        return modelAndView;
+    }
 }

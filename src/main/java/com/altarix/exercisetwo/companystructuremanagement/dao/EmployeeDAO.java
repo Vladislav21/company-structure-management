@@ -46,4 +46,6 @@ public interface EmployeeDAO {
     void updateDepartmentChief(@Param("idChief") int idChief);
 
     Integer getChiefIdInCurrentDepartment(@Param("idDepartment") int idDepartment);
+
+    boolean checkExistenceDateOfDismissal(@Param("employeeId") int employeeId);
 }

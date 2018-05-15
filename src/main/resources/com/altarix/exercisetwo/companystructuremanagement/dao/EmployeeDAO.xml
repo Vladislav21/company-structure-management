@@ -22,13 +22,19 @@
     <select id="getSalaryChiefForCurrentDepartment" resultType="Double">
         SELECT e.salary
         FROM employees e
-        WHERE e.department_id = #{idDepartment} AND e.is_chief = TRUE;
+        WHERE e.department_id = #{idDepartment} AND e.is_chief = TRUE AND e.date_of_dismissal IS NULL;
     </select>
 
     <select id="checkExistenceEmployee" resultType="Boolean">
         SELECT exists(SELECT e.id
                       FROM employees e
-                      WHERE e.id = #{id})
+                      WHERE e.id = #{id} AND e.date_of_dismissal IS NULL)
+    </select>
+
+    <select id="checkExistenceDateOfDismissal" resultType="Boolean">
+        SELECT exists(SELECT e.date_of_dismissal
+                      FROM employees e
+                      WHERE e.id = #{employeeId} AND e.date_of_dismissal NOTNULL);
     </select>
 
     <select id="getEmployeeById" resultMap="employeeMap">
@@ -118,7 +124,7 @@
         SET
             department_id = #{idPointer},
             is_chief      = FALSE
-        WHERE id = #{idEmployee}
+        WHERE id = #{idEmployee} AND date_of_dismissal IS NULL
     </update>
 
     <update id="updateDepartmentChief">
@@ -139,6 +145,7 @@
                                                              WHERE e.department_id =
                                                                    #{idPointer} AND
                                                                    e.is_chief = TRUE)
+              AND date_of_dismissal IS NULL
     </update>
 
     <update id="swapAllEmployeesToDepartment">

@@ -59,6 +59,12 @@
                       WHERE e.department_id = #{departmentId} AND e.is_chief = TRUE);
     </select>
 
+    <select id="checkExistenceDateOfDismissal" resultType="Boolean">
+        SELECT exists(SELECT e.date_of_dismissal
+                      FROM employees e
+                      WHERE e.id = #{employeeId} AND e.date_of_dismissal NOTNULL);
+    </select>
+
     <select id="checkingDepartmentName" resultType="Boolean">
         SELECT exists(SELECT 1
                       FROM departments
@@ -92,7 +98,7 @@
     <select id="checkExistenceEmployeeInDepartment" resultType="Boolean">
         SELECT exists(SELECT e.id
                       FROM employees e
-                      WHERE e.department_id = #{id})
+                      WHERE e.department_id = #{id} AND e.date_of_dismissal IS NULL)
     </select>
 
     <select id="checkExistenceDepartment" resultType="Boolean">
@@ -173,8 +179,8 @@
     <select id="getFundOfSalary" resultType="Double">
         SELECT sum(e.salary) AS fund_of_salary
         FROM employees e
-        GROUP BY e.department_id
-        HAVING e.department_id = #{id}
+        GROUP BY e.department_id, e.date_of_dismissal
+        HAVING e.department_id = #{id} AND e.date_of_dismissal IS NULL
     </select>
 
     <delete id="delete">

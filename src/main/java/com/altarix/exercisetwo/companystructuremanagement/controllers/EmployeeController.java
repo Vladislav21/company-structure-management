@@ -43,7 +43,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/putEmployee/{id}", method = RequestMethod.PUT)
-    public Employee update(@RequestBody Employee employee, @PathVariable("id") int id) throws InvalidParametersOfEmployeeException, InvalidValueOfEmployeeIdException {
+    public Employee update(@RequestBody Employee employee, @PathVariable("id") int id) throws InvalidParametersOfEmployeeException, InvalidValueOfEmployeeIdException, UnavailableOperationForEmployeeException {
         if (employeeService.checkExistenceEmployee(id)) {
             employee.setId(id);
             if (employeeService.checkValidateDataOfEmployee(employee)) {
@@ -83,7 +83,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/swapEmployeeToDepartment/{idEmployee}/{idPointer}", method = RequestMethod.PUT)
-    public void swapEmployeeToDepartment(@PathVariable("idEmployee") int idEmployee, @PathVariable("idPointer") int idPointer) throws InvalidValueOfEmployeeIdException, InvalidParametersOfEmployeeException {
+    public void swapEmployeeToDepartment(@PathVariable("idEmployee") int idEmployee, @PathVariable("idPointer") int idPointer) throws InvalidValueOfEmployeeIdException, InvalidParametersOfEmployeeException, UnavailableOperationForEmployeeException {
         if (employeeService.checkExistenceEmployee(idEmployee)) {
             employeeService.swapEmployeeToDepartment(idEmployee, idPointer);
             logger.info("Update successful");
@@ -92,7 +92,7 @@ public class EmployeeController {
         }
     }
 
-    @RequestMapping(value = "/swapAllEmployeesToDepartment/{idSwapped}/{idPointer}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/swapAllEmployeesToDepartment/{idSwapped}/{idPointer}", method = RequestMethod.PUT)
     public void swapAllEmployeesToDepartment(@PathVariable("idSwapped") int idSwapped, @PathVariable("idPointer") int idPointer) throws InvalidValueOfDepartmentIdException {
         if (employeeService.checkExistenceDepartment(idSwapped) && employeeService.checkExistenceDepartment(idPointer)) {
             employeeService.swapAllEmployeesToDepartment(idSwapped, idPointer);
@@ -103,7 +103,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/getChiefByIdEmployee/{id}", method = RequestMethod.GET)
-    public Employee getChiefByIdEmployee(@PathVariable("id") int id) throws ChiefNotFoundException {
+    public Employee getChiefByIdEmployee(@PathVariable("id") int id) throws ChiefNotFoundException, UnavailableOperationForEmployeeException {
         Employee chief = employeeService.getChiefByIdEmployee(id);
         if (chief != null) {
             return chief;
