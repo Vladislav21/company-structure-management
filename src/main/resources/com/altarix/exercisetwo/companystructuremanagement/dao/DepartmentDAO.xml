@@ -22,6 +22,14 @@
         VALUES (#{name}, #{creationDate}, NULL, #{parentId});
     </insert>
 
+    <insert id="saveInfoAboutFundOfSalary">
+        INSERT INTO funds (fund_of_department, department_id) SELECT
+                                                                  sum(e.salary) AS fund_of_department,
+                                                                  e.department_id
+                                                              FROM employees e
+                                                              GROUP BY e.department_id
+    </insert>
+
     <update id="appointChiefToDepartment">
         UPDATE departments
         SET chief_id = #{chiefId}

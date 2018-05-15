@@ -5,6 +5,7 @@ import com.altarix.exercisetwo.companystructuremanagement.domain.Department;
 import com.altarix.exercisetwo.companystructuremanagement.exceptions.UnavailableOperationForEmployeeException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -113,4 +114,9 @@ public class DepartmentService {
         return departmentDAO.checkExistenceDateOfDismissal(employeeId);
     }
 
+    @Scheduled(fixedRate = 300000)
+    public void saveInfoAboutFundOfSalary() {
+        departmentDAO.saveInfoAboutFundOfSalary();
+        logger.info("Preservation of data for salary fund");
+    }
 }

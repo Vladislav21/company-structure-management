@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS departments (
   REFERENCES departments (id)
   MATCH SIMPLE
   ON UPDATE NO ACTION
-  ON DELETE NO ACTION
+  ON DELETE CASCADE
 );
 --------------------------------------------------------------------
 DROP INDEX IF EXISTS departments_chief_id;
@@ -58,3 +58,14 @@ CREATE INDEX employees_department_id
   ON employees
   USING BTREE (department_id);
 --------------------------------------------------------------------
+CREATE TABLE funds (
+  id                 SERIAL,
+  fund_of_department DOUBLE PRECISION,
+  department_id      INTEGER,
+  CONSTRAINT pk_funds PRIMARY KEY (id),
+  CONSTRAINT fk_funds_to_departments FOREIGN KEY (department_id)
+  REFERENCES departments (id)
+  MATCH SIMPLE
+  ON UPDATE NO ACTION
+  ON DELETE CASCADE
+)
