@@ -83,7 +83,7 @@ public class DepartmentController {
         }
     }
 
-    @RequestMapping(value = "/getLowLvlDepartments/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/getDepartmentChildren/{id}", method = RequestMethod.GET)
     public List<Department> getDepartmentChildren(@PathVariable("id") int id) throws DepartmentsNotFoundException {
         List<Department> result = departmentService.getDepartmentChildren(id);
         if (!result.isEmpty()) {
@@ -93,7 +93,7 @@ public class DepartmentController {
         }
     }
 
-    @RequestMapping(value = "/getAllLowLvlDepartments/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/getAllDepartmentChildren/{id}", method = RequestMethod.GET)
     public List<Department> getAllDepartmentChildren(@PathVariable("id") int id) throws DepartmentsNotFoundException {
         List<Department> result = departmentService.getAllDepartmentChildren(id);
         if (!result.isEmpty()) {
@@ -114,7 +114,7 @@ public class DepartmentController {
         }
     }
 
-    @RequestMapping(value = "/getAllHighDepartments/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/getAllDepartmentParents/{id}", method = RequestMethod.GET)
     public List<Department> getAllDepartmentParents(@PathVariable("id") int id) throws DepartmentsNotFoundException {
         List<Department> result = departmentService.getAllDepartmentParents(id);
         if (!result.isEmpty()) {
@@ -135,9 +135,9 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/getFundOfSalary/{id}", method = RequestMethod.GET)
-    public double getFundOfSalary(@PathVariable("id") int id) throws InvalidValueOfDepartmentIdException {
+    public String getFundOfSalary(@PathVariable("id") int id) throws InvalidValueOfDepartmentIdException {
         if (departmentService.checkExistenceDepartment(id) && departmentService.checkExistenceEmployeeInDepartment(id)) {
-            return departmentService.getFundOfSalary(id);
+            return "{\"fund_of_department\":" + String.valueOf(departmentService.getFundOfSalary(id)) + "}";
         } else {
             throw new InvalidValueOfDepartmentIdException();
         }
