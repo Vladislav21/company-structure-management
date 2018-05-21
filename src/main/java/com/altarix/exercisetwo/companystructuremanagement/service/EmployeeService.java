@@ -135,7 +135,7 @@ public class EmployeeService {
     }
 
     private boolean checkPhoneNumber(String phoneNumber) {
-        Pattern pattern = Pattern.compile("[\\s\\(\\)0-9-+]+");
+        Pattern pattern = Pattern.compile("[\\s()0-9-+]+");
         Matcher matcher = pattern.matcher(phoneNumber);
         return matcher.matches();
     }
