@@ -19,6 +19,4 @@ public class CompanyStructureManagementApplication {
                 SwaggerConfig.class
         }, args);
     }
-
-
 }
